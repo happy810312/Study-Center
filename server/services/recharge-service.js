@@ -62,8 +62,8 @@ class RechargeService {
         ...priceData(amount),
         orderId: orderId,
         redirectUrls: {
-          confirmUrl: "http://localhost:8080/api/recharge/linePay/confirm",
-          cancelUrl: "http://localhost:8080/api/recharge/linePay/cancel",
+          confirmUrl: `${process.env.RECHARGE_API_URL}/linePay/confirm`,
+          cancelUrl: `${process.env.RECHARGE_API_URL}/linePay/cancel`,
         },
       };
       const headers = this.createSignature(uri, amount, linePayBody);

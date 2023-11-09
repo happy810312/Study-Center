@@ -11,7 +11,6 @@ const rechargeRoute = require("./routes").recharge;
 const scheduleRoute = require("./routes").schedule;
 const passport = require("passport");
 require("./config/jwt-passport")(passport);
-require("./config/google-passport")(passport);
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/studyCenterPractice")

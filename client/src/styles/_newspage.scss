@@ -1,0 +1,118 @@
+section.news {
+  div.news_wrapper {
+    max-width: 1000px;
+    width: 100%;
+    padding: 180px 0;
+    margin: auto;
+    div.news-content {
+      padding-bottom: 80px;
+      h2.news-title {
+        font-size: 3.5rem;
+        font-weight: 600;
+        color: $color-dark;
+        padding-bottom: 20px;
+      }
+      span.news-subtitle {
+        display: block;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: $color-grey-dark;
+      }
+    }
+    div.news-btns {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      a {
+        width: max-content;
+        font-size: 1.25rem;
+        color: $color-white;
+        background-color: $color-dark;
+        border-radius: 2rem;
+        padding: 1rem 2rem;
+        margin: 1rem;
+        transition: 0.3s;
+        &:hover {
+          background-color: rgba($color-dark, 0.7);
+        }
+      }
+      a.news-edit-btn.editing {
+        background-color: rgba($color-dark, 0.7);
+        transition: background-color 0.3s;
+      }
+    }
+    div.news-accordion {
+      ul.news-accordion_list {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        li.news-accordion_card {
+          position: relative;
+          width: 100%;
+          background-color: $color-white;
+          border-radius: 1rem;
+          padding: 4rem 3rem;
+          margin: 20px;
+          h3.news-accordion_card-title {
+            font-size: 2rem;
+            font-weight: 600;
+          }
+          span.news-accordion_card-content {
+            display: none;
+          }
+          button.news-accordion_card-arrow {
+            position: absolute;
+            top: 85px;
+            right: 10%;
+            transform: translateY(-50%);
+            background-color: transparent;
+            border: 1px solid rgba($color-grey-dark, 0.5);
+            border-radius: 50%;
+            padding: 0.5rem;
+            cursor: pointer;
+          }
+          div.news-accordion_card-delete {
+            position: absolute;
+            display: none;
+            right: 10px;
+            top: 10px;
+            animation: shakeTrashcan 0.1s linear infinite alternate;
+            cursor: pointer;
+            svg {
+              fill: $color-white;
+            }
+            &.active {
+              display: block;
+              transition: display 1s;
+            }
+
+            @keyframes shakeTrashcan {
+              0% {
+                transform: rotate(-15deg);
+              }
+              100% {
+                transform: rotate(15deg);
+              }
+            }
+          }
+          &.active {
+            span.news-accordion_card-content {
+              display: block;
+              color: $color-grey-dark;
+              text-align: justify;
+              letter-spacing: 1.2;
+              line-height: 1.2;
+              padding: 20px 0;
+            }
+            button.news-accordion_card-arrow {
+              background-color: $color-blue;
+              fill: $color-white;
+              transform: rotate(180deg) translateY(27px);
+            }
+          }
+        }
+      }
+    }
+  }
+}

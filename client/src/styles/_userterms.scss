@@ -1,0 +1,52 @@
+section.user-terms {
+  background-color: $color-grey-light;
+  div.user-terms_wrapper {
+    padding: 180px 0 100px;
+    div.user-terms_inner {
+      background-color: $color-white;
+      border-radius: 2rem;
+      padding: 2rem;
+      h2.user-terms_maintitle {
+        font-size: 3.5rem;
+        font-weight: 700;
+        letter-spacing: 1.2;
+        text-align: center;
+        background-color: $color-white;
+        padding-bottom: 40px;
+      }
+      h3.user-terms_title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: 1.2;
+        padding: 10px 0;
+      }
+      ol.user-terms_lists {
+        li.user-terms_list {
+          list-style: square;
+          font-size: 1rem;
+          font-weight: 500;
+          letter-spacing: 1.2;
+          line-height: 1.5;
+          margin-left: 2.5rem;
+        }
+      }
+      ol.user-terms_sub-lists {
+        padding-top: 10px;
+        li.user-terms_sub-list {
+          list-style: decimal-leading-zero;
+          font-size: 1rem;
+          font-weight: 500;
+          letter-spacing: 1.2;
+          line-height: 1.5;
+          margin-left: 4.5rem;
+        }
+      }
+      p.user-terms_description {
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 1.2;
+        line-height: 1.5;
+      }
+    }
+  }
+}

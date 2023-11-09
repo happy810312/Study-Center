@@ -1,0 +1,195 @@
+section.schedule {
+  div.schedule_wrapper {
+    padding: {
+      top: 180px;
+      bottom: 90px;
+    }
+    h3.schedule-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: 1.2;
+      line-height: 1.2;
+      color: $color-dark;
+      text-align: center;
+      padding-bottom: 20px;
+    }
+    span.schedule-subtitle {
+      display: block;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 1.2;
+      line-height: 1.2;
+      color: $color-grey-dark;
+      text-align: center;
+      padding-bottom: 100px;
+    }
+    div.schedule-inner {
+      display: flex;
+      div.schedule-calender {
+        flex: 6;
+        background-color: $color-grey-light;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px rgba($color-grey-dark, 0.4);
+        div.schedule-calender_nav {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          padding: 20px 0;
+          margin: auto;
+          button.schedule-calender_nav-btn {
+            background-color: transparent;
+            border: none;
+            padding: 0 20px;
+            margin: 0 20px;
+            cursor: pointer;
+            &:hover {
+              background-color: $color-dark;
+              transition: 0.5s;
+              svg {
+                fill: $color-white;
+              }
+            }
+          }
+          h2.schedule-calender_nav-date {
+            font-size: 1.25rem;
+            font-weight: 600;
+          }
+        }
+        div.schedule-calender_calendar-grid {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          grid-template-rows: repeat(5, 1fr);
+          justify-content: center;
+          align-content: center;
+          justify-items: center;
+          align-items: center;
+          div.schedule-calender_calendar-day {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 1.25rem;
+            font-weight: 600;
+          }
+          div.schedule-calender_calendar-date {
+            width: 100%;
+            padding: 20px;
+            &:not(.empty):hover {
+              background-color: $color-blue;
+              cursor: pointer;
+              h3.schedule-calender_calendar-date-number {
+                color: $color-white;
+                &.active::after,
+                &.active::before {
+                  background-color: $color-white;
+                  width: 0;
+                  height: 3px;
+                  transition: 1s;
+                }
+              }
+            }
+            h3.schedule-calender_calendar-date-number {
+              position: relative;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: $color-grey-dark;
+              text-align: center;
+              vertical-align: middle;
+              &.active::before {
+                content: "";
+                position: absolute;
+                left: 50%;
+                top: 120%;
+                display: block;
+                width: 50%;
+                height: 8px;
+                background-color: $color-grey-dark;
+              }
+              &.active::after {
+                content: "";
+                position: absolute;
+                right: 50%;
+                top: 120%;
+                display: block;
+                width: 50%;
+                height: 8px;
+                background-color: $color-grey-dark;
+              }
+              &.active {
+                color: $color-dark;
+              }
+            }
+          }
+        }
+      }
+      div.schedule-info {
+        flex: 4;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        background-color: $color-white;
+        border-radius: 1rem;
+        box-shadow: 0 0 5px rgba($color-grey-dark, 0.3);
+        padding: 2rem;
+        span.schedule-info_session,
+        span.schedule-info_duedate {
+          display: block;
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: $color-dark;
+          line-height: 1.2;
+          letter-spacing: 1.2;
+        }
+      }
+    }
+  }
+}
+section.slogan {
+  background-color: $color-dark;
+  div.slogan_wrapper {
+    padding: 80px 0 180px;
+    h3.slogan-title {
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: $color-white;
+      letter-spacing: 1.2;
+      text-align: center;
+      padding: 40px 0;
+      span.slogan-prevtitle {
+        display: block;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 1.2;
+        text-align: center;
+        color: $color-grey-dark;
+        padding-bottom: 20px;
+      }
+    }
+    div.slogan-image {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      span.slogan-image_subtitle {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: 1.2;
+        color: $color-white;
+        padding-top: 30px;
+      }
+    }
+    button.slogan-btn {
+      display: block;
+      width: max-content;
+      font-size: 1rem;
+      font-weight: 600;
+      color: $color-white;
+      background-color: $color-blue;
+      border: 1px solid $color-blue;
+      border-radius: 2rem;
+      padding: 1rem;
+      margin: 40px auto 0;
+      cursor: pointer;
+    }
+  }
+}

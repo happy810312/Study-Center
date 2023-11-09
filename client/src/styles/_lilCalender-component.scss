@@ -1,0 +1,76 @@
+div.calender {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  max-width: 350px;
+  width: 100%;
+  background-color: $color-grey-light;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba($color-grey-dark, 0.4);
+  div.calender_nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
+    margin: auto;
+    button.calender_nav-btn {
+      background-color: transparent;
+      border: none;
+      border-radius: 50%;
+      margin: 0 1rem;
+      cursor: pointer;
+      &:hover {
+        background-color: $color-dark;
+        transition: 0.5s;
+        svg {
+          fill: $color-white;
+        }
+      }
+    }
+    h2.calender_nav-date {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 1.2;
+      margin: auto;
+    }
+  }
+  div.calender_calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    div.calender_calendar-day {
+      text-align: center;
+      vertical-align: middle;
+      font-size: 1rem;
+      font-weight: 550;
+    }
+    div.calender_calendar-date {
+      width: 100%;
+      padding: 0.5rem;
+      &:not(.empty):hover {
+        background-color: $color-blue;
+        cursor: pointer;
+        h3.calender_calendar-date-number {
+          color: $color-white;
+        }
+      }
+      h3.calender_calendar-date-number {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: $color-grey-dark;
+        text-align: center;
+        margin: auto;
+        &.active {
+          color: $color-dark;
+        }
+      }
+    }
+  }
+}

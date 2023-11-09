@@ -1,0 +1,125 @@
+section.monthy-booking {
+  div.monthy-booking_wrapper {
+    padding-top: 180px;
+    h2.monthy-booking-title {
+      font-size: 2.5rem;
+      font-weight: 600;
+      letter-spacing: 1.2;
+      text-align: center;
+      padding-bottom: 20px;
+    }
+    h3.monthy-booking-subtitle {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 1.2;
+      color: $color-grey-dark;
+      text-align: center;
+      padding-bottom: 60px;
+    }
+    form.monthy-booking_date-range-picker {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 20px;
+      // MUI Date-picker更改樣式方法
+      .date-picker {
+        padding-bottom: 20px;
+      }
+      div.period-picker {
+        position: relative;
+        display: flex;
+        border: 1px solid rgb($color-dark, 0.2);
+        border-radius: 4px;
+        margin: 1rem 0;
+        &.input-focus {
+          border: 2px solid $color-blue;
+        }
+        &:hover:not(.input-focus) {
+          border: 1px solid $color-dark;
+        }
+        div.period-picker_period {
+          label {
+            position: absolute;
+            left: 8px;
+            top: -8px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: rgb($color-dark, 0.6);
+            background-color: $color-grey-light;
+            padding: 0 4px;
+          }
+          input[type="text"] {
+            background-color: $color-grey-light;
+            border: none;
+            border-radius: 4px;
+            padding: 16.5px 0 16.5px 14px;
+            outline: none;
+          }
+        }
+        div.period-picker_btn {
+          position: relative;
+          //   width: 100%;
+          width: 50px;
+          border: none;
+          button {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: flex-end;
+            width: 40px;
+            border: none;
+            background-color: transparent;
+            padding: 8px;
+            &:hover {
+              background-color: darken($color-grey-light, 5%);
+              border-radius: 50%;
+            }
+            svg {
+              fill: rgb($color-dark, 0.6);
+            }
+          }
+        }
+        div.period-picker_dropdown {
+          position: absolute;
+          z-index: 1;
+          top: 105%;
+          right: 0;
+          background-color: $color-white;
+          border-radius: 4px;
+          box-shadow: 0 0 5px rgb($color-dark, 0.54);
+          ul.period-picker_dropdown-menu {
+            padding: 0;
+            margin: 0;
+            li.period-picker_dropdown-list {
+              padding: 0.5rem;
+              &:hover {
+                background-color: rgb($color-dark, 0.1);
+                cursor: pointer;
+              }
+              &:not(:last-child) {
+                padding-bottom: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+    button.monthy-booking-menu_navigation-search {
+      width: 10vw;
+      font-size: 1rem;
+      font-weight: 500;
+      color: rgb($color-dark, 0.6);
+      border: none;
+      border-radius: 4px;
+      background-color: $color-white;
+      padding: 5.25px 4px;
+      box-shadow: 0 0 2px rgb($color-dark, 0.3);
+      &:hover {
+        background-color: darken($color-grey-light, 5%);
+      }
+    }
+  }
+}

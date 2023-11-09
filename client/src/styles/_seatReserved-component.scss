@@ -1,0 +1,359 @@
+// rain-sound-2F
+$A-block-seats-amount: 9;
+$B-block-seats-amount: 9;
+$C-block-seats-amount: 12;
+$D-block-seats-amount: 12;
+$E-block-seats-amount: 13;
+$F-block-seats-amount: 16;
+
+// rain-sound-3F
+$L-left-block-seats-amount: 11;
+$L-right-block-seats-amount: 15;
+$V-left-block-seats-amount: 9;
+
+section.seat-reserved {
+  background-color: $color-grey-light;
+  div.seat-reserved_wrapper {
+    padding-bottom: 40px;
+    div.seat-reserved_inner {
+      span.seat-reserved_inner-time {
+        display: block;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 1.2;
+        line-height: 1.2;
+        text-align: center;
+      }
+      div.seat-reserved_btn-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 20px;
+        button {
+          width: max-content;
+          border-radius: 2rem;
+          border: 1px solid $color-blue;
+          background-color: $color-blue;
+          font-size: 1rem;
+          color: $color-white;
+          padding: 0.75rem;
+          margin: 1rem;
+          &:hover {
+            background-color: darken($color-blue, 10%);
+          }
+        }
+      }
+      div.seat-reserved_inner-grid {
+        display: grid;
+        max-width: 800px;
+        width: 100%;
+        height: 500px;
+        border: thick double $color-grey-dark;
+        border-bottom-left-radius: 5rem;
+        box-shadow: 0 0 5px $color-dark;
+        margin: auto;
+      }
+      div.rain-sound-2F {
+        grid-template-columns: repeat(15, 1fr);
+        grid-template-rows: 195px repeat(2, 50px) 195px;
+        grid-template-areas:
+          "F F F F F F F r r r . . . . ."
+          "E E E . . . . . . . i i i i i"
+          "E E E D D D C C C . . . . . ."
+          "E E E D D D C C C B B B A A A";
+        div.block {
+          position: relative;
+          border: 3px double $color-dark;
+
+          // nested grid
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          grid-template-rows: repeat(8, 1fr);
+
+          span.block-name {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            transform: translateX(-50%);
+          }
+          div.seat-no {
+            border: 2px solid $color-dark;
+            border-bottom: none;
+            justify-self: center;
+            align-self: center;
+            padding: 2px;
+            cursor: pointer;
+            &:hover {
+              background-color: lighten($color-blue, 20%);
+              color: $color-white;
+              transition: all 0.2s;
+            }
+          }
+          div.seat-no.unavaliable {
+            color: $color-white;
+            border: 1px solid $color-grey-dark;
+            background-color: $color-grey-dark;
+            cursor: not-allowed;
+          }
+          div.seat-no.selected {
+            background-color: $color-blue;
+            color: $color-white;
+          }
+        }
+        div.block-A {
+          grid-area: A;
+          grid-template-rows: repeat(6, 1fr);
+          grid-template-areas:
+            "A03 . A02 A01"
+            ". . . ."
+            "A06 . A05 A04"
+            ". . . ."
+            "A09 . A08 A07"
+            ". . . .";
+          @for $i from 1 through $A-block-seats-amount {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.A#{$ten-digits}#{$digits} {
+              grid-area: A#{$ten-digits}#{$digits};
+            }
+          }
+        }
+        div.block-B {
+          grid-area: B;
+          grid-template-rows: repeat(6, 1fr);
+          grid-template-areas:
+            "B03 . B02 B01"
+            ". . . ."
+            "B06 . B05 B04"
+            ". . . ."
+            "B09 . B08 B07"
+            ". . . .";
+          @for $i from 1 through $B-block-seats-amount {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.B#{$ten-digits}#{$digits} {
+              grid-area: B#{$ten-digits}#{$digits};
+            }
+          }
+        }
+        div.block-C {
+          grid-area: C;
+          grid-template-areas:
+            "C03 C02 . C01"
+            ". . . ."
+            "C06 . . C04"
+            ". . . ."
+            "C09 C08 . C07"
+            ". . . ."
+            "C12 C11 . C10"
+            ". . . .";
+          @for $i from 1 through $C-block-seats-amount {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.C#{$ten-digits}#{$digits} {
+              grid-area: C#{$ten-digits}#{$digits};
+            }
+          }
+        }
+        div.block-D {
+          grid-area: D;
+          grid-template-areas:
+            "D03 . D02 D01"
+            ". . . ."
+            "D06 . D05 D04"
+            ". . . ."
+            "D09 . D08 D07"
+            ". . . ."
+            "D12 . D11 D10"
+            ". . . .";
+          @for $i from 1 through $D-block-seats-amount {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.D#{$ten-digits}#{$digits} {
+              grid-area: D#{$ten-digits}#{$digits};
+            }
+          }
+        }
+        div.block-E {
+          grid-area: E;
+          grid-template-rows: repeat(10, 1fr);
+          grid-template-areas:
+            "E03 E02 . ."
+            ". . . ."
+            "E06 E05 . ."
+            ". . . E04"
+            "E09 E08 . ."
+            ". . . E07"
+            "E12 E11 . ."
+            ". . . E10"
+            ". . . ."
+            ". . . E13";
+          @for $i from 1 through $E-block-seats-amount {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.E#{$ten-digits}#{$digits} {
+              grid-area: E#{$ten-digits}#{$digits};
+            }
+          }
+          border-bottom-left-radius: 4.5rem;
+        }
+        div.block-F {
+          grid-area: F;
+          grid-template-columns: repeat(9, 1fr);
+          grid-template-rows: repeat(6, 1fr);
+          grid-template-areas:
+            "F13 . F11 F09 . F07 F05 . F01"
+            ". . . . . . . . ."
+            "F15 . F12 F10 . F08 F06 . F02"
+            ". . . . . . . . ."
+            "F16 . . . . . . . F03"
+            ". . . . . . . . .";
+          div.seat-no {
+            border: 2px solid $color-dark;
+            border-top: none;
+          }
+          @for $i from 1 through $F-block-seats-amount {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.F#{$ten-digits}#{$digits} {
+              grid-area: F#{$ten-digits}#{$digits};
+            }
+          }
+        }
+        div.block-information-counter {
+          grid-area: i; // infomation
+          border-right: none;
+          border-top: none;
+        }
+        div.block-rest {
+          grid-area: r;
+          border-right: none;
+          border-top: none;
+        }
+      }
+      div.rain-sound-3F {
+        grid-template-columns: repeat(15, 1fr);
+        grid-template-rows: 175px repeat(3, 40px) 195px;
+        grid-template-areas:
+          "ll ll ll vt vt vt vt vt . . . . . . ."
+          "ll ll ll . . . . . . . . . . . ."
+          "ll ll ll lr lr . . . . . . . . vr vr"
+          "ll ll ll lr lr . . vb vb vb vb . . vr vr"
+          "ll ll ll lr lr vl vl vb vb vb vb . . vr vr";
+        div.block {
+          position: relative;
+          border: 3px double $color-dark;
+
+          // nested grid
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: repeat(7, 1fr);
+
+          span.block-name {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+          }
+          div.seat-no {
+            border: 2px solid $color-dark;
+            border-bottom: none;
+            justify-self: center;
+            align-self: center;
+            padding: 2px;
+            cursor: pointer;
+            &:hover {
+              background-color: $color-blue;
+              color: $color-white;
+              transition: all 0.2s;
+            }
+          }
+        }
+        div.block-L-left {
+          grid-area: ll;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: repeat(7, 1fr);
+          grid-template-areas:
+            "L01 . L03"
+            "L02 . L04"
+            ". . ."
+            "L05 . L08"
+            "L06 . L09"
+            "L07 . L10"
+            ". . L11";
+          @for $i from 1 through $L-left-block-seats-amount {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.L#{$ten-digits}#{$digits} {
+              grid-area: L#{$ten-digits}#{$digits};
+            }
+          }
+          border-bottom-left-radius: 4.5rem;
+        }
+        div.block-L-right {
+          grid-area: lr;
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: repeat(4, 1fr);
+          grid-template-areas:
+            ". L12"
+            ". L13"
+            ". L14"
+            ". L15";
+          @for $i from 12 through $L-right-block-seats-amount {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.L#{$ten-digits}#{$digits} {
+              grid-area: L#{$ten-digits}#{$digits};
+            }
+          }
+        }
+        div.block-V-top {
+          grid-area: vt;
+        }
+        div.block-V-bottom {
+          grid-area: vb;
+        }
+        div.block-V-right {
+          grid-area: vr;
+        }
+        div.block-V-left {
+          grid-area: vl;
+          grid-template-columns: repeat(1, 1fr);
+          grid-template-rows: repeat(3, 1fr);
+          grid-template-areas:
+            "V07"
+            "V08"
+            "V09";
+          @for $i from 7 through $V-left-block-seats-amount {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.V#{$ten-digits}#{$digits} {
+              grid-area: V#{$ten-digits}#{$digits};
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+section.schedule-submit {
+  div.schedule-submit_wrapper {
+    padding-bottom: 60px;
+    button.schedule-submit-btn {
+      display: block;
+      width: max-content;
+      color: $color-white;
+      border: 1px solid $color-blue;
+      background-color: $color-blue;
+      border-radius: 2rem;
+      padding: 0.75rem;
+      margin: auto;
+      &:hover {
+        background-color: darken($color-blue, 10%);
+      }
+    }
+  }
+}

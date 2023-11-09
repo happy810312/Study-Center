@@ -1,0 +1,127 @@
+@mixin size($w, $h: $w, $bdrs: 0px) {
+  width: $w;
+  height: $h;
+  border-radius: $bdrs;
+}
+@mixin flex($j: center, $a: center) {
+  display: flex;
+  justify-content: $j;
+  align-items: $a;
+}
+
+div.page404 {
+  background-color: $color-dark;
+  overflow: hidden;
+  div.page404_wrapper {
+    @include flex;
+    @include size(100vw, 100vh);
+    div.page404_txt {
+      margin: 20px;
+      h2.page404_txt-not-found {
+        color: $color-white;
+        font-size: 2.5rem;
+        letter-spacing: 1.2;
+        padding-bottom: 20px;
+      }
+      span.page404_txt-joker {
+        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        color: $color-grey-light;
+        letter-spacing: 1.2;
+      }
+    }
+    div.page404_monster-group {
+      display: flex;
+      align-items: center;
+      div.page404_monster,
+      div.monster-grey {
+        position: relative;
+        @include flex;
+        flex-direction: column;
+        @include size(100px, 100px, 10px);
+        background-color: $color-grey-dark;
+        box-shadow: 0 0 10px rgba($color-grey-dark, 0.5);
+        margin: 10px;
+        animation: jumping 1s infinite alternate;
+        &::before,
+        &::after {
+          content: "";
+          position: absolute;
+          top: -10px;
+          left: 50%;
+          display: block;
+          @include size(20px, 10px, 10px);
+          background-color: $color-white;
+        }
+        &::before {
+          transform: translateX(-70%) rotate(45deg);
+        }
+        &::after {
+          transform: translateX(-30%) rotate(-45deg);
+        }
+        div.page404_monster-eye {
+          position: relative;
+          @include size(45px, 45px, 50%);
+          background-color: $color-white;
+          div.page404_monster-eyeball {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            @include size(20px, 20px, 50%);
+            transform: translate(-50%, -50%);
+            background-color: $color-grey-dark;
+            animation: eyemove 2s infinite alternate;
+          }
+        }
+        div.page404_monster-mouth {
+          @include size(35px, 15px, 10px);
+          background-color: $color-white;
+          margin-top: 10px;
+        }
+      }
+      div.monster-blue {
+        background-color: $monster-Blue;
+        animation-delay: 0.5s;
+        div.page404_monster-eye {
+          div.page404_monster-eyeball {
+            background-color: $monster-Red;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes jumping {
+  50% {
+    transform: translateY(0);
+    box-shadow: 0 0 20px rgba($color-grey-dark, 0.5);
+  }
+  100% {
+    transform: translateY(-50px);
+    box-shadow: 0 120px 30px rgba($color-grey-dark, 0.5);
+  }
+}
+@keyframes eyemove {
+  0%,
+  10% {
+    left: 25%;
+  }
+  90%,
+  100% {
+    left: 75%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  div.page404_wrapper {
+    flex-direction: column;
+    justify-content: space-around;
+    div.page404_monster-group {
+      padding-top: 100px;
+    }
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 992px) {
+}

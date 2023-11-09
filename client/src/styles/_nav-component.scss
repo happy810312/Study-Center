@@ -1,0 +1,178 @@
+header.header,
+header.header-grey-light {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  width: 100%;
+
+  div.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1240px;
+    width: 100%;
+    margin: auto;
+    padding: 0.5rem 1rem;
+
+    section.header-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 234px;
+      svg {
+        fill: $color-dark;
+      }
+      a {
+        font-size: 1rem;
+        font-weight: 700;
+        width: max-content;
+        border: 2px solid $color-dark;
+        border-radius: 20px;
+        margin-left: 0.5rem;
+        padding: 0.5rem;
+      }
+    }
+
+    nav.header-navigation {
+      width: 558px;
+      ul.header-menu {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        margin: auto 0;
+        li {
+          position: relative;
+          padding: 1rem 0;
+          & > a::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: $color-blue;
+          }
+          &:hover > a {
+            position: relative;
+            color: $color-blue;
+          }
+          &:hover > a::after {
+            width: 100%;
+            transition: 0.5s;
+          }
+        }
+        li.menu-company {
+          position: relative;
+          ul {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            display: none;
+            width: 12rem;
+            background-color: $color-white;
+            border-radius: 20px;
+            li {
+              padding: 0.75rem 1rem;
+              svg {
+                fill: $color-dark;
+              }
+            }
+          }
+          &:hover {
+            ul {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+    ul.header-btn {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      min-width: 242px;
+      margin: auto 0;
+      li {
+        padding: 0.5rem;
+        &:first-child {
+          a {
+            width: max-content;
+            font-size: 1rem;
+            font-weight: 700;
+            color: $color-white;
+            border: 1px solid $color-dark;
+            border-radius: 1.8rem;
+            background-color: $color-dark;
+            padding: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+header.header-dark {
+  div.header-container {
+    section.header-logo {
+      svg {
+        fill: $color-grey-light;
+      }
+      a {
+        color: $color-grey-light;
+        border: 2px solid $color-grey-light;
+      }
+    }
+    nav.header-navigation {
+      ul.header-menu {
+        li {
+          a {
+            color: $color-grey-light;
+          }
+          & > a::after {
+            background-color: $color-grey-light;
+          }
+          &:hover > a {
+            color: $color-grey-light;
+          }
+          // 修不好，待處理，hover後其他的改成灰色
+          &:hover + a {
+            color: $color-grey-dark;
+          }
+          li {
+            a {
+              color: $color-grey-dark;
+              &:hover {
+                color: $color-dark;
+              }
+            }
+          }
+        }
+        li.menu-company {
+          a {
+            svg {
+              fill: #f5f6f6;
+            }
+          }
+        }
+      }
+    }
+    ul.header-btn {
+      li {
+        a {
+          color: $color-grey-light;
+        }
+        &:first-child {
+          a {
+            color: #151618;
+            border: 1px solid $color-grey-light;
+            background-color: $color-grey-light;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+$color-grey-light: #f5f6f6;
+$color-grey-dark: hsl(210, 7%, 47%);
+$color-dark: #151618;
+$color-blue: #007bff;
+$color-white: #fff;
+$monster-Red: #e55a54;
+$monster-Blue: #0c4475;
+
+* {
+  box-sizing: border-box;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+body {
+  font-family: "Circular XX", sans-serif;
+  width: 100%;
+  // overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: $color-dark;
+}
+
+header.header-grey-light,
+.trigger-for-header-grey-light {
+  background-color: $color-grey-light;
+}
+header.header-dark,
+.trigger-for-header-dark {
+  background-color: $color-dark;
+}
+
+.container {
+  max-width: 1240px;
+  width: 100%;
+  padding: 0 1rem;
+  margin: auto;
+}
+
+@import "./nav-component";
+@import "./seatCategories-component";
+@import "./homepage";
+@import "./newspage";
+@import "./planTypepage";
+@import "./booking";
+@import "./monthyBooking";
+@import "./footer";
+@import "./privacypolicy";
+@import "./userterms";
+@import "./page404";
+@import "./loginpage";
+@import "./seatReserved-component";
+@import "./schedule";
+@import "./lilCalender-component";
+@import "./timePicker-component";
+@import "./profliepage";
+@import "./customBootstrap";

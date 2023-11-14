@@ -64,11 +64,13 @@ header.header-grey-light div.header-container section.header-logo {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 234px;
+  max-width: 234px;
+  width: 100%;
 }
 header.header div.header-container section.header-logo svg,
 header.header-grey-light div.header-container section.header-logo svg {
   fill: #151618;
+  transform: rotate(-180deg);
 }
 header.header div.header-container section.header-logo a,
 header.header-grey-light div.header-container section.header-logo a {
@@ -81,9 +83,16 @@ header.header-grey-light div.header-container section.header-logo a {
   margin-left: 0.5rem;
   padding: 0.5rem;
 }
+header.header div.header-container section.header-logo a:first-child,
+header.header-grey-light div.header-container section.header-logo a:first-child {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
 header.header div.header-container nav.header-navigation,
 header.header-grey-light div.header-container nav.header-navigation {
-  width: 558px;
+  max-width: 558px;
+  width: 100%;
 }
 header.header div.header-container nav.header-navigation ul.header-menu,
 header.header-grey-light div.header-container nav.header-navigation ul.header-menu {
@@ -145,20 +154,20 @@ header.header div.header-container nav.header-navigation ul.header-menu li.menu-
 header.header-grey-light div.header-container nav.header-navigation ul.header-menu li.menu-company:hover ul {
   display: block;
 }
-header.header div.header-container ul.header-btn,
-header.header-grey-light div.header-container ul.header-btn {
+header.header div.header-container ul.header-btn_desktop,
+header.header-grey-light div.header-container ul.header-btn_desktop {
   display: flex;
   justify-content: space-around;
   align-items: center;
   min-width: 242px;
   margin: auto 0;
 }
-header.header div.header-container ul.header-btn li,
-header.header-grey-light div.header-container ul.header-btn li {
+header.header div.header-container ul.header-btn_desktop li,
+header.header-grey-light div.header-container ul.header-btn_desktop li {
   padding: 0.5rem;
 }
-header.header div.header-container ul.header-btn li:first-child a,
-header.header-grey-light div.header-container ul.header-btn li:first-child a {
+header.header div.header-container ul.header-btn_desktop li:first-child a,
+header.header-grey-light div.header-container ul.header-btn_desktop li:first-child a {
   width: -moz-max-content;
   width: max-content;
   font-size: 1rem;
@@ -168,6 +177,58 @@ header.header-grey-light div.header-container ul.header-btn li:first-child a {
   border-radius: 1.8rem;
   background-color: #151618;
   padding: 1rem;
+}
+header.header div.header-container div.header-btn_mobile,
+header.header-grey-light div.header-container div.header-btn_mobile {
+  display: none;
+  position: relative;
+  background-color: #fff;
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+}
+header.header div.header-container div.header-btn_mobile::before, header.header div.header-container div.header-btn_mobile::after,
+header.header div.header-container div.header-btn_mobile div.header-btn_mobile-between,
+header.header-grey-light div.header-container div.header-btn_mobile::before,
+header.header-grey-light div.header-container div.header-btn_mobile::after,
+header.header-grey-light div.header-container div.header-btn_mobile div.header-btn_mobile-between {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  content: "";
+  width: 30px;
+  height: 3px;
+  background-color: hsl(210, 7%, 47%);
+  transition: all 0.2s;
+}
+header.header div.header-container div.header-btn_mobile::after,
+header.header-grey-light div.header-container div.header-btn_mobile::after {
+  top: 30px;
+}
+header.header div.header-container div.header-btn_mobile div.header-btn_mobile-between,
+header.header-grey-light div.header-container div.header-btn_mobile div.header-btn_mobile-between {
+  top: 20px;
+  transition: all 0.2s;
+}
+header.header div.header-container div.header-btn_mobile.menu-open::before, header.header div.header-container div.header-btn_mobile.menu-open::after,
+header.header-grey-light div.header-container div.header-btn_mobile.menu-open::before,
+header.header-grey-light div.header-container div.header-btn_mobile.menu-open::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  content: "";
+  width: 30px;
+  height: 3px;
+  background-color: hsl(210, 7%, 47%);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+header.header div.header-container div.header-btn_mobile.menu-open::after,
+header.header-grey-light div.header-container div.header-btn_mobile.menu-open::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+header.header div.header-container div.header-btn_mobile.menu-open div.header-btn_mobile-between,
+header.header-grey-light div.header-container div.header-btn_mobile.menu-open div.header-btn_mobile-between {
+  height: 0;
 }
 
 header.header-dark div.header-container section.header-logo svg {
@@ -207,6 +268,24 @@ header.header-dark div.header-container ul.header-btn li:first-child a {
   background-color: #f5f6f6;
 }
 
+@media screen and (max-width: 992px) {
+  div.header-btn_mobile {
+    display: block !important;
+  }
+  nav.header-navigation,
+  ul.header-btn_desktop {
+    display: none !important;
+  }
+  section.header-logo {
+    justify-content: flex-start !important;
+  }
+  section.header-logo a:first-child svg {
+    margin-right: auto;
+  }
+  section.header-logo a:last-child {
+    display: none;
+  }
+}
 section.seat-categories {
   overflow: hidden;
 }
@@ -2218,199 +2297,6 @@ section.schedule-submit div.schedule-submit_wrapper button.schedule-submit-btn:h
   background-color: #0062cc;
 }
 
-section.schedule div.schedule_wrapper {
-  padding-top: 180px;
-  padding-bottom: 90px;
-}
-section.schedule div.schedule_wrapper h3.schedule-title {
-  font-size: 3.5rem;
-  font-weight: 700;
-  letter-spacing: 1.2;
-  line-height: 1.2;
-  color: #151618;
-  text-align: center;
-  padding-bottom: 20px;
-}
-section.schedule div.schedule_wrapper span.schedule-subtitle {
-  display: block;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 1.2;
-  line-height: 1.2;
-  color: hsl(210, 7%, 47%);
-  text-align: center;
-  padding-bottom: 100px;
-}
-section.schedule div.schedule_wrapper div.schedule-inner {
-  display: flex;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender {
-  flex: 6;
-  background-color: #f5f6f6;
-  border-radius: 1rem;
-  box-shadow: 0 0 10px rgba(111, 120, 128, 0.4);
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 20px 0;
-  margin: auto;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_nav button.schedule-calender_nav-btn {
-  background-color: transparent;
-  border: none;
-  padding: 0 20px;
-  margin: 0 20px;
-  cursor: pointer;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_nav button.schedule-calender_nav-btn:hover {
-  background-color: #151618;
-  transition: 0.5s;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_nav button.schedule-calender_nav-btn:hover svg {
-  fill: #fff;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_nav h2.schedule-calender_nav-date {
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  justify-content: center;
-  align-content: center;
-  justify-items: center;
-  align-items: center;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid div.schedule-calender_calendar-day {
-  text-align: center;
-  vertical-align: middle;
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid div.schedule-calender_calendar-date {
-  width: 100%;
-  padding: 20px;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid div.schedule-calender_calendar-date:not(.empty):hover {
-  background-color: #007bff;
-  cursor: pointer;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid div.schedule-calender_calendar-date:not(.empty):hover h3.schedule-calender_calendar-date-number {
-  color: #fff;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid div.schedule-calender_calendar-date:not(.empty):hover h3.schedule-calender_calendar-date-number.active::after, section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid div.schedule-calender_calendar-date:not(.empty):hover h3.schedule-calender_calendar-date-number.active::before {
-  background-color: #fff;
-  width: 0;
-  height: 3px;
-  transition: 1s;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid div.schedule-calender_calendar-date h3.schedule-calender_calendar-date-number {
-  position: relative;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: hsl(210, 7%, 47%);
-  text-align: center;
-  vertical-align: middle;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid div.schedule-calender_calendar-date h3.schedule-calender_calendar-date-number.active::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 120%;
-  display: block;
-  width: 50%;
-  height: 8px;
-  background-color: hsl(210, 7%, 47%);
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid div.schedule-calender_calendar-date h3.schedule-calender_calendar-date-number.active::after {
-  content: "";
-  position: absolute;
-  right: 50%;
-  top: 120%;
-  display: block;
-  width: 50%;
-  height: 8px;
-  background-color: hsl(210, 7%, 47%);
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-calender div.schedule-calender_calendar-grid div.schedule-calender_calendar-date h3.schedule-calender_calendar-date-number.active {
-  color: #151618;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-info {
-  flex: 4;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  background-color: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 0 5px rgba(111, 120, 128, 0.3);
-  padding: 2rem;
-}
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-info span.schedule-info_session,
-section.schedule div.schedule_wrapper div.schedule-inner div.schedule-info span.schedule-info_duedate {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #151618;
-  line-height: 1.2;
-  letter-spacing: 1.2;
-}
-
-section.slogan {
-  background-color: #151618;
-}
-section.slogan div.slogan_wrapper {
-  padding: 80px 0 180px;
-}
-section.slogan div.slogan_wrapper h3.slogan-title {
-  font-size: 3.5rem;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: 1.2;
-  text-align: center;
-  padding: 40px 0;
-}
-section.slogan div.slogan_wrapper h3.slogan-title span.slogan-prevtitle {
-  display: block;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 1.2;
-  text-align: center;
-  color: hsl(210, 7%, 47%);
-  padding-bottom: 20px;
-}
-section.slogan div.slogan_wrapper div.slogan-image {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-section.slogan div.slogan_wrapper div.slogan-image span.slogan-image_subtitle {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 1.2;
-  color: #fff;
-  padding-top: 30px;
-}
-section.slogan div.slogan_wrapper button.slogan-btn {
-  display: block;
-  width: -moz-max-content;
-  width: max-content;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-  background-color: #007bff;
-  border: 1px solid #007bff;
-  border-radius: 2rem;
-  padding: 1rem;
-  margin: 40px auto 0;
-  cursor: pointer;
-}
-
 div.calender {
   position: absolute;
   left: 50%;
@@ -2701,4 +2587,65 @@ section.profile div.profile_wrapper div.profile_inner div.profile-phone div.prof
   --bs-pagination-active-bg: #151618;
   --bs-pagination-hover-bg: hsl(210, 7%, 47%);
   --bs-pagination-disabled-color: hsl(210, 7%, 47%);
+}
+
+section.about-us div.about-us_wrapper {
+  padding-top: 180px;
+}
+section.about-us div.about-us_wrapper div.about-us_content {
+  padding-bottom: 40px;
+}
+section.about-us div.about-us_wrapper div.about-us_content h2.about-us_content-title {
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: #151618;
+  padding-bottom: 20px;
+}
+section.about-us div.about-us_wrapper div.about-us_content span.about-us_content-subtitle {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: hsl(210, 7%, 47%);
+}
+section.about-us div.about-us_wrapper div.about-us_google-map {
+  padding-bottom: 20px;
+}
+section.about-us div.about-us_wrapper div.about-us_google-map iframe {
+  border: 0;
+  width: 100%;
+  height: 450px;
+}
+section.about-us div.about-us_wrapper div.about-us_information h3.about-us_information-title {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0;
+  padding-bottom: 20px;
+}
+section.about-us div.about-us_wrapper div.about-us_information ul.about-us_information-menu {
+  padding-left: 0;
+}
+section.about-us div.about-us_wrapper div.about-us_information ul.about-us_information-menu div.about-us_information-card {
+  display: flex;
+  padding-bottom: 20px;
+}
+section.about-us div.about-us_wrapper div.about-us_information ul.about-us_information-menu div.about-us_information-card div.about-us_information-card-icon {
+  flex: 0 0 60px;
+  justify-self: center;
+  align-self: center;
+}
+section.about-us div.about-us_wrapper div.about-us_information ul.about-us_information-menu div.about-us_information-card div.about-us_information-card-icon svg {
+  margin: 10px;
+}
+section.about-us div.about-us_wrapper div.about-us_information ul.about-us_information-menu div.about-us_information-card div.about-us_information-card-content {
+  flex: 1;
+  align-self: center;
+  line-height: 1.2;
+  color: hsl(210, 7%, 47%);
+}
+section.about-us div.about-us_wrapper div.about-us_information ul.about-us_information-menu div.about-us_information-card div.about-us_information-card-content h4.about-us_information-card-title {
+  font-size: 1.15rem;
+}
+section.about-us div.about-us_wrapper div.about-us_information ul.about-us_information-menu div.about-us_information-card div.about-us_information-card-content span.about-us_information-card-subtitle {
+  font-size: 0.9rem;
 }/*# sourceMappingURL=style.css.map */

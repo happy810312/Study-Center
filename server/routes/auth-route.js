@@ -17,16 +17,78 @@ router.get("/testAPI", (req, res) => {
 router.get(
   "/google",
   passport.authenticate("google", {
+    session: false,
     // 每次都可以選擇一個帳號來登入 => 加入email及select_account
     scope: ["profile", "email"],
     prompt: "select_account",
   })
 );
 
-router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
-  console.log("進入redirect區域");
-  return res.redirect("/profile");
-});
+router.get(
+  "/google/redirect",
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: `${process.env.FRONT_URL}/login`,
+  }),
+  (req, res) => {
+    console.log("進入Google redirect區域");
+    // jwt token to localstorage
+    const foundUser = req.user;
+    if (foundUser) {
+      const tokenObject = { _id: foundUser._id, googleID: foundUser.googleID };
+      let token = jwt.sign(tokenObject, process.env.JWT_SECRET);
+      res.cookie(
+        "User",
+        JSON.stringify({
+          message: "成功登入",
+          token: "JWT " + token,
+          user: foundUser,
+        })
+      );
+      res.redirect(`${process.env.FRONT_URL}/profile`);
+    } else {
+      return res.status(400).redirect(`${process.env.FRONT_URL}/login`);
+    }
+  }
+);
+
+// ---------------------Facebook登入---------------------
+router.get(
+  "/facebook",
+  passport.authenticate("facebook", { scope: "email", session: false })
+);
+
+router.get(
+  "/facebook/redirect",
+  passport.authenticate("facebook", {
+    scope: "email",
+    session: false,
+    failureRedirect: `${process.env.FRONT_URL}/login`,
+  }),
+  (req, res) => {
+    console.log("Facebook redirect區域");
+    // jwt token to localstorage
+    const foundUser = req.user;
+    if (foundUser) {
+      const tokenObject = {
+        _id: foundUser._id,
+        facebookID: foundUser.facebookID,
+      };
+      let token = jwt.sign(tokenObject, process.env.JWT_SECRET);
+      res.cookie(
+        "User",
+        JSON.stringify({
+          message: "成功登入",
+          token: "JWT " + token,
+          user: foundUser,
+        })
+      );
+      res.redirect(`${process.env.FRONT_URL}/profile`);
+    } else {
+      return res.status(400).redirect(`${process.env.FRONT_URL}/login`);
+    }
+  }
+);
 
 // ---------------------一般登入---------------------------
 router.post("/register", async (req, res) => {

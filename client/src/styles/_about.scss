@@ -1,0 +1,71 @@
+section.about-us {
+  div.about-us_wrapper {
+    padding-top: 180px;
+    div.about-us_content {
+      padding-bottom: 40px;
+      h2.about-us_content-title {
+        font-size: 3.5rem;
+        font-weight: 600;
+        color: $color-dark;
+        padding-bottom: 20px;
+      }
+      span.about-us_content-subtitle {
+        display: block;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: $color-grey-dark;
+      }
+    }
+    div.about-us_google-map {
+      padding-bottom: 20px;
+      iframe {
+        border: 0;
+        width: 100%;
+        height: 450px;
+      }
+    }
+    div.about-us_information {
+      h3.about-us_information-title {
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 1.2;
+        margin-bottom: 0;
+        padding-bottom: 20px;
+      }
+      ul.about-us_information-menu {
+        padding-left: 0;
+        div.about-us_information-card {
+          display: flex;
+          padding-bottom: 20px;
+          div.about-us_information-card-icon {
+            flex: 0 0 60px;
+            justify-self: center;
+            align-self: center;
+            svg {
+              margin: 10px;
+            }
+          }
+          div.about-us_information-card-content {
+            flex: 1;
+            align-self: center;
+            line-height: 1.2;
+            color: $color-grey-dark;
+            h4.about-us_information-card-title {
+              font-size: 1.15rem;
+            }
+            span.about-us_information-card-subtitle {
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// @media screen and (max-width: 601px) {
+//   h4.about-us_information-card-title {
+//     font-size: 16px;
+//     color: red;
+//   }
+// }

@@ -28,23 +28,53 @@ const ProfilePage = () => {
   };
   const handlePatchPhone = () => {
     const _id = JSON.parse(localStorage.getItem("User")).user._id;
-    UserService.patchPhoneNumner(_id, newPhoneNumber).then((data) => {
-      setMessage(data.data.msg);
-    });
-  };
-  useEffect(() => {
-    const userID = JSON.parse(localStorage.getItem("User")).user._id;
-    UserService.getProfile(userID)
+    UserService.patchPhoneNumner(_id, newPhoneNumber)
       .then((data) => {
-        setUserObject(data.data);
-        setIsLoading(false);
+        setMessage(data.data.msg);
       })
       .catch((e) => {
         console.log(e);
-        setIsLoading(false);
+        // setMessage(JSON.stringify(e.response.error));
       });
+  };
+
+  // 解析cookie轉成JSON
+  const decodeCookieToObject = (cookieName) => {
+    const cookieValue = document.cookie
+      .split(";")
+      .find((row) => row.startsWith(`${cookieName}=`))
+      .split("=")[1];
+
+    if (cookieValue) {
+      const decodedValue = decodeURIComponent(cookieValue);
+      const parseValue = JSON.parse(decodedValue);
+      return parseValue;
+    }
+
+    return null;
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("User")) {
+      const userID = JSON.parse(localStorage.getItem("User")).user._id;
+      UserService.getProfile(userID)
+        .then((data) => {
+          setUserObject(data.data);
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          console.log(e);
+          setIsLoading(false);
+        });
+    } else if (document.cookie) {
+      // 解析cookie轉成JSON
+      const userObject = decodeCookieToObject("User");
+      if (userObject !== null) {
+        localStorage.setItem("User", JSON.stringify(userObject));
+      }
+    }
   }, []);
-  console.log(userObject);
+
   return (
     <>
       {isLoading && <div className="alert alert-danger">Loading...</div>}

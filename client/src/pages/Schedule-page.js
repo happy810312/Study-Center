@@ -199,12 +199,9 @@ const SchedulePage = () => {
           </h1>
           <form>
             <fieldset>
-              {message && (
-                <div className="alert alert-danger">{String(message)}</div>
-              )}
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <div className="row mb-3">
-                  <div className="col-3">
+                <div className="row mb-3 ">
+                  <div className="col-12 col-md-3 mb-3 mb-md-0">
                     <DatePicker
                       className="date-picker"
                       label="Start Date"
@@ -217,7 +214,7 @@ const SchedulePage = () => {
                       formatDensity
                     />
                   </div>
-                  <div className="col-3">
+                  <div className="col-12 col-md-3 mb-3 mb-md-0">
                     <DatePicker
                       className="date-picker"
                       label="End Date"
@@ -230,7 +227,7 @@ const SchedulePage = () => {
                       formatDensity
                     />
                   </div>
-                  <div className="col-2 offset-4 d-flex justify-content-end align-items-center">
+                  <div className="col-12 col-md-2 offset-0 offset-md-4 d-flex justify-content-start justify-content-md-end align-items-center">
                     {!cancel && (
                       <button
                         type="button"
@@ -265,6 +262,9 @@ const SchedulePage = () => {
               </LocalizationProvider>
             </fieldset>
           </form>
+          {message && (
+            <div className="alert alert-danger">{String(message)}</div>
+          )}
           <div className="table-responsive">
             <table className="table table-striped table-hover table-bordered align-middle caption-top">
               <caption>List of Reservations</caption>

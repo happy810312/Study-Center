@@ -13,7 +13,7 @@ class AuthService {
     return axios.post(API_URL + "/login", { email, password });
   }
   loginGoogle() {
-    return axios.get(API_URL + "/google");
+    return axios.get(API_URL + "/loginGoogle");
   }
   logout() {
     localStorage.removeItem("User");

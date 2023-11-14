@@ -19,9 +19,11 @@ header.header-grey-light {
       display: flex;
       justify-content: center;
       align-items: center;
-      min-width: 234px;
+      max-width: 234px;
+      width: 100%;
       svg {
         fill: $color-dark;
+        transform: rotate(-180deg);
       }
       a {
         font-size: 1rem;
@@ -32,10 +34,16 @@ header.header-grey-light {
         margin-left: 0.5rem;
         padding: 0.5rem;
       }
+      & a:first-child {
+        border: none;
+        padding: 0;
+        margin: 0;
+      }
     }
 
     nav.header-navigation {
-      width: 558px;
+      max-width: 558px;
+      width: 100%;
       ul.header-menu {
         display: flex;
         justify-content: space-around;
@@ -90,7 +98,7 @@ header.header-grey-light {
       }
     }
 
-    ul.header-btn {
+    ul.header-btn_desktop {
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -109,6 +117,54 @@ header.header-grey-light {
             background-color: $color-dark;
             padding: 1rem;
           }
+        }
+      }
+    }
+
+    div.header-btn_mobile {
+      display: none;
+      position: relative;
+      background-color: $color-white;
+      width: 40px;
+      height: 40px;
+      padding: 5px;
+      &::before,
+      &::after,
+      div.header-btn_mobile-between {
+        position: absolute;
+        top: 10px;
+        left: 5px;
+        content: "";
+        width: 30px;
+        height: 3px;
+        background-color: $color-grey-dark;
+        transition: all 0.2s;
+      }
+      &::after {
+        top: 30px;
+      }
+      div.header-btn_mobile-between {
+        top: 20px;
+        transition: all 0.2s;
+      }
+      // mobile menu drop down
+      &.menu-open {
+        &::before,
+        &::after {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          content: "";
+          width: 30px;
+          height: 3px;
+          background-color: $color-grey-dark;
+          transform: translate(-50%, -50%) rotate(45deg);
+        }
+        &::after {
+          transform: translate(-50%, -50%) rotate(-45deg);
+        }
+        div.header-btn_mobile-between {
+          height: 0;
         }
       }
     }
@@ -173,6 +229,27 @@ header.header-dark {
           }
         }
       }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  div.header-btn_mobile {
+    display: block !important;
+  }
+  nav.header-navigation,
+  ul.header-btn_desktop {
+    display: none !important;
+  }
+  section.header-logo {
+    justify-content: flex-start !important;
+    & a:first-child {
+      svg {
+        margin-right: auto;
+      }
+    }
+    & a:last-child {
+      display: none;
     }
   }
 }

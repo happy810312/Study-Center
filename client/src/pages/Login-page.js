@@ -25,13 +25,12 @@ const LoginPage = ({ currentUser, setCurrentUser }) => {
       setMessage(e.response.data);
     }
   };
-  const handleGoogleBtn = async () => {
-    try {
-      let response = await AuthService.loginGoogle();
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleGoogleBtn = () => {
+    // fetch是XMLHttpRequest，會受到CORS規範，要直接用網址(不受CORS規範)進入/api/auth/google
+    window.location.href = "http://localhost:8080/api/auth/google";
+  };
+  const handleFacebookBtn = () => {
+    window.location.href = "http://localhost:8080/api/auth/facebook";
   };
   // 為了看currentUser得值用的，因為是異步函數
   useEffect(() => {
@@ -124,7 +123,11 @@ const LoginPage = ({ currentUser, setCurrentUser }) => {
               <span>Continue with Google</span>
             </button>
             {/* <a href="/auth">Google</a> */}
-            <button type="button" className="btn btn-dark my-2">
+            <button
+              onClick={handleFacebookBtn}
+              type="button"
+              className="btn btn-dark my-2"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"

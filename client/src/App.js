@@ -15,6 +15,7 @@ import MonthyBooking from "./pages/MonthyBooking-page";
 import RegisterPage from "./pages/Register-page";
 import NewsManagePage from "./pages/NewsManage-page";
 import ProfilePage from "./pages/Profile-page";
+import AboutPage from "./pages/About-page";
 import AuthService from "./services/auth-service";
 import "./styles/style.css";
 
@@ -74,6 +75,7 @@ const App = () => {
           <Route path="/booking" element={<Booking />}></Route>
           <Route path="/monthy-booking" element={<MonthyBooking />}></Route>
           <Route path="/profile" element={<ProfilePage />}></Route>
+          <Route path="/about" element={<AboutPage />}></Route>
         </Route>
         <Route path="news-manage" element={<NewsManagePage />}></Route>
         <Route path="*" element={<Page404 />}></Route>

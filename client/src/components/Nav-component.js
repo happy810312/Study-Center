@@ -4,6 +4,7 @@ import AuthService from "../services/auth-service";
 
 const NavComponent = ({ currentUser, setCurrentUser }) => {
   const [navBarClass, setNavBarClass] = useState("header-grey-light");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navRef = useRef(null);
   const location = useLocation();
 
@@ -11,6 +12,9 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
     AuthService.logout();
     window.alert("登出成功");
     setCurrentUser(null);
+  };
+  const handleMenuOpen = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   useEffect(() => {
@@ -49,39 +53,11 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
     // pathname改變時會在執行一次
   }, [location.pathname]);
 
-  // 不知道只寫下面不會起作用??
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     // useRef.current. "DOM元素屬性"
-  //     const navBarHeight = navRef.current.offsetHeight;
-  //     const childNodes = document.querySelectorAll(
-  //       ".trigger-for-header-grey-light, .trigger-for-header-dark"
-  //     );
-
-  //     childNodes.forEach((node) => {
-  //       const nodeTop = node.getBoundingClientRect().top;
-  //       if (nodeTop < navBarHeight) {
-  //         // 子節點進入 navigation bar 高度範圍內
-  //         if (node.classList.contains("trigger-for-header-grey-light")) {
-  //           setNavBarClass("header-grey-light");
-  //         } else {
-  //           setNavBarClass("header-dark");
-  //         }
-  //       }
-  //     });
-  //   };
-  //   handleScroll();
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: "smooth",
-  //   });
-  // }, [location.pathname]);
-
   return (
     <header ref={navRef} className={`header ${navBarClass}`}>
       <div className="header-container">
         <section className="header-logo">
-          <Link to="/" style={{ border: "none", padding: "0", margin: "0" }}>
+          <Link to="/">
             <svg
               version="1.0"
               xmlns="http://www.w3.org/2000/svg"
@@ -140,9 +116,6 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
                 <li>
                   <Link to="/googleMyBusiness">Google My Business</Link>
                 </li>
-                <li>
-                  <Link to="/contact">Contact</Link>
-                </li>
               </ul>
             </li>
             {currentUser && currentUser.user.role == "reader" && (
@@ -158,7 +131,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
             )}
           </ul>
         </nav>
-        <ul className="header-btn">
+        <ul className="header-btn_desktop">
           <li>
             <Link to="/plan">Book a Seat</Link>
           </li>
@@ -175,7 +148,14 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
             </li>
           )}
         </ul>
+        <div
+          onClick={handleMenuOpen}
+          className={`header-btn_mobile ${isMenuOpen ? "menu-open" : ""}`}
+        >
+          <div className="header-btn_mobile-between"></div>
+        </div>
       </div>
+      <div className="header-mobile_menu"></div>
     </header>
   );
 };

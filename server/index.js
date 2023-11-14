@@ -9,8 +9,16 @@ const userRoute = require("./routes").user;
 const seatsRoute = require("./routes").seats;
 const rechargeRoute = require("./routes").recharge;
 const scheduleRoute = require("./routes").schedule;
+
 const passport = require("passport");
-require("./config/jwt-passport")(passport);
+const {
+  jwtStrategy,
+  googleStrategy,
+  facebookStrategy,
+} = require("./config/passport");
+passport.use(jwtStrategy);
+passport.use(googleStrategy);
+passport.use(facebookStrategy);
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/studyCenterPractice")

@@ -13,9 +13,15 @@ const userSchema = new mongoose.Schema({
   },
   googleID: {
     type: String,
+    require: function () {
+      !facebookID || !email;
+    },
   },
   facebookID: {
     type: String,
+    require: function () {
+      !googleID || !email;
+    },
   },
   thumbnail: {
     type: String,
@@ -32,7 +38,9 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    require: true,
+    require: function () {
+      !googleID || !facebookID;
+    },
     unique: true,
     minLength: 8,
     maxLength: 60,

@@ -14,9 +14,35 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
     setCurrentUser(null);
   };
   const handleMenuOpen = () => {
+    // menu open時不可以捲動畫面
+    if (isMenuOpen) {
+      document.body.style.overflow = "";
+    } else {
+      document.body.style.overflow = "hidden";
+    }
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // mobile版畫面突然變大，且menu還是放下的狀態 => 自動縮回
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width >= 992 && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isMenuOpen]);
+  // mobile版若發生網址變化，且menu還是放下的狀態 => 自動縮回
+  useEffect(() => {
+    if (isMenuOpen) {
+      setIsMenuOpen(!isMenuOpen);
+    }
+  }, [location.pathname]);
+  // 自動調整nav bar顏色
   useEffect(() => {
     // 監聽子節點位置的變化
     const handleScroll = () => {
@@ -155,7 +181,46 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
           <div className="header-btn_mobile-between"></div>
         </div>
       </div>
-      <div className="header-mobile_menu"></div>
+      {isMenuOpen && (
+        <div className="header-mobile_menu">
+          <div className="container">
+            <div className="header-mobile_menu_wrapper">
+              <nav className="header-mobile_navigation">
+                <ul className="header-mobile_navigation-menu">
+                  <li className="header-mobile_navigation-list">
+                    <Link to="/news">News</Link>
+                  </li>
+                  <li className="header-mobile_navigation-list">
+                    <Link to="/schedule">Schedule</Link>
+                  </li>
+                  <li className="header-mobile_navigation-list menu-list-has-children">
+                    <Link to="#">Company</Link>
+                    <ul className="header-mobile_navigation-children-menu">
+                      <li className="header-mobile_navigation-children-list">
+                        <Link to="/about">About</Link>
+                      </li>
+                      <li className="header-mobile_navigation-children-list">
+                        <Link to="/googleMyBusiness">Google My Business</Link>
+                      </li>
+                    </ul>
+                  </li>
+                  {currentUser && currentUser.user.role == "reader" && (
+                    <li className="header-mobile_navigation-list">
+                      <Link to="/profile">Profile</Link>
+                    </li>
+                  )}
+
+                  {currentUser && currentUser.user.role == "admin" && (
+                    <li className="header-mobile_navigation-list">
+                      <Link to="/admin">Admin</Link>
+                    </li>
+                  )}
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

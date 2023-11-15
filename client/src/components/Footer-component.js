@@ -155,7 +155,7 @@ const FooterComponent = () => {
                 <Link to="/book">Program Plan</Link>
               </li>
               <li className="footer-navigation_menu-item">
-                <Link to="#">Google My Bussiness</Link>
+                <Link to="#">GMB</Link>
               </li>
               <li className="footer-navigation_menu-item">
                 <Link to="#">Contact Us</Link>

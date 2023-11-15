@@ -1,23 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const SeatCategoriesComponent = () => {
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(null);
   const [translateX, setTranslateX] = useState(0);
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchEndX, setTouchEndX] = useState(null);
 
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartX(e.clientX);
-  };
-  const handleMouseUp = (e) => {
-    setIsDragging(false);
-  };
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const newX = e.clientX;
-    const diff = newX - startX;
-    setTranslateX(translateX + diff);
-  };
+  const listRef = useRef(null);
+
+  // desktop
   const handleRightArrow = () => {
     const diff = 388;
     console.log(translateX);
@@ -30,6 +20,39 @@ const SeatCategoriesComponent = () => {
     if (translateX == -diff) return;
     setTranslateX(translateX - diff);
   };
+
+  // mobile
+  const checkDirectionAndTranslate = () => {
+    // 計算偏移量
+    const offset = touchEndX - touchStartX;
+    console.log(offset);
+
+    // 根據滑動的方向，決定是增加還是減少 translateX
+    setTranslateX((prevTranslateX) => prevTranslateX - offset);
+  };
+  const handleTouchStartX = (e) => {
+    setTouchStartX(e.changedTouches[0].screenX);
+  };
+  const handleTouchEndX = (e) => {
+    setTouchEndX(e.changedTouches[0].screenX);
+    checkDirectionAndTranslate();
+
+    // 歸零校正
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
+
+  useEffect(() => {
+    const list = listRef.current;
+
+    list.addEventListener("touchstart", handleTouchStartX);
+    list.addEventListener("touchend", handleTouchEndX);
+
+    return () => {
+      list.removeEventListener("touchstart", handleTouchStartX);
+      list.removeEventListener("touchend", handleTouchEndX);
+    };
+  }, [touchStartX, touchEndX]);
 
   return (
     <section className="seat-categories trigger-for-header-grey-light">
@@ -68,7 +91,7 @@ const SeatCategoriesComponent = () => {
             className="seat-categories_slider"
             style={{ transform: `translateX(${translateX}px)` }}
           >
-            <ul className="seat-categories_list">
+            <ul ref={listRef} className="seat-categories_list">
               <li className="seat-categories_card">
                 <div className="seat-categories_card-image">
                   <img

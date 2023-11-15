@@ -11,7 +11,7 @@ section.seat-categories {
     div.seat-categories_nav-slider {
       position: absolute;
       right: 2rem;
-      top: 200px;
+      top: 265px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -81,6 +81,54 @@ section.seat-categories {
               font-size: 1rem;
               text-align: justify;
               color: $color-grey-dark;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  section.seat-categories {
+    div.seat-categories_wrapper {
+      h2.seat-categories_title {
+        font-size: 2.5rem;
+      }
+      div.seat-categories_nav-slider {
+        top: 240px;
+        max-width: 125px;
+      }
+      div.seat-categories_slider {
+        ul.seat-categories_list {
+          li.seat-categories_card {
+            max-width: 300px;
+            div.seat-categories_card-categories {
+              span.seat-categories_card-categories-description {
+                text-align: left;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  section.seat-categories {
+    div.seat-categories_wrapper {
+      h2.seat-categories_title {
+        font-size: 2rem;
+      }
+      div.seat-categories_slider {
+        ul.seat-categories_list {
+          li.seat-categories_card {
+            max-width: 225px;
+            div.seat-categories_card-categories {
+              span.seat-categories_card-categories-description {
+                text-align: left;
+              }
             }
           }
         }

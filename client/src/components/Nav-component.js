@@ -40,6 +40,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
   useEffect(() => {
     if (isMenuOpen) {
       setIsMenuOpen(!isMenuOpen);
+      document.body.style.overflow = "";
     }
   }, [location.pathname]);
   // 自動調整nav bar顏色

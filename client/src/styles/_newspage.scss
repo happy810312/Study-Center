@@ -47,6 +47,7 @@ section.news {
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
+        padding-left: 0;
         li.news-accordion_card {
           position: relative;
           width: 100%;
@@ -54,23 +55,40 @@ section.news {
           border-radius: 1rem;
           padding: 4rem 3rem;
           margin: 20px;
-          h3.news-accordion_card-title {
-            font-size: 2rem;
-            font-weight: 600;
+          &.active {
+            span.news-accordion_card-content {
+              display: block;
+              color: $color-grey-dark;
+              text-align: justify;
+              letter-spacing: 1.2;
+              line-height: 1.2;
+              padding: 20px 0;
+            }
+            div.news-accordion_card-navigation {
+              button.news-accordion_card-arrow {
+                background-color: $color-blue;
+                fill: $color-white;
+                transform: rotate(180deg);
+              }
+            }
+          }
+          div.news-accordion_card-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            h3.news-accordion_card-title {
+              font-size: 2rem;
+              font-weight: 600;
+            }
+            button.news-accordion_card-arrow {
+              background-color: transparent;
+              border: 1px solid rgba($color-grey-dark, 0.5);
+              border-radius: 50%;
+              padding: 0.5rem;
+            }
           }
           span.news-accordion_card-content {
             display: none;
-          }
-          button.news-accordion_card-arrow {
-            position: absolute;
-            top: 85px;
-            right: 10%;
-            transform: translateY(-50%);
-            background-color: transparent;
-            border: 1px solid rgba($color-grey-dark, 0.5);
-            border-radius: 50%;
-            padding: 0.5rem;
-            cursor: pointer;
           }
           div.news-accordion_card-delete {
             position: absolute;
@@ -96,19 +114,81 @@ section.news {
               }
             }
           }
-          &.active {
-            span.news-accordion_card-content {
-              display: block;
-              color: $color-grey-dark;
-              text-align: justify;
-              letter-spacing: 1.2;
-              line-height: 1.2;
-              padding: 20px 0;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  section.news {
+    div.news_wrapper {
+      div.news-accordion {
+        ul.news-accordion_list {
+          li.news-accordion_card {
+            div.news-accordion_card-navigation {
+              h3.news-accordion_card-title {
+                font-size: 1.75rem;
+              }
             }
-            button.news-accordion_card-arrow {
-              background-color: $color-blue;
-              fill: $color-white;
-              transform: rotate(180deg) translateY(27px);
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  section.news {
+    div.news_wrapper {
+      div.news-accordion {
+        ul.news-accordion_list {
+          li.news-accordion_card {
+            div.news-accordion_card-navigation {
+              h3.news-accordion_card-title {
+                font-size: 1.5rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 576px) {
+  section.news {
+    div.news_wrapper {
+      div.news-accordion {
+        ul.news-accordion_list {
+          li.news-accordion_card {
+            div.news-accordion_card-navigation {
+              h3.news-accordion_card-title {
+                font-size: 1.25rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 387px) {
+  section.news {
+    div.news_wrapper {
+      div.news-content {
+        span.news-subtitle {
+          font-size: 0.9rem;
+        }
+      }
+      div.news-accordion {
+        ul.news-accordion_list {
+          li.news-accordion_card {
+            div.news-accordion_card-navigation {
+              h3.news-accordion_card-title {
+                font-size: 1.15rem;
+              }
+            }
+            span.news-accordion_card-content {
+              font-size: 0.9rem;
             }
           }
         }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import SeatCategories from "../components/SeatCategories-component";
 import ScheduleService from "../services/schedule-service";
 import { addMonths, format, set } from "date-fns";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -403,7 +402,6 @@ const SchedulePage = () => {
           </div>
         </div>
       </div>
-      <SeatCategories />
     </>
   );
 };

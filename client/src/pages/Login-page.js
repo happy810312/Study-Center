@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth-service";
+import { UserIcon } from "../components/icons";
 
 const LoginPage = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
@@ -44,6 +45,10 @@ const LoginPage = ({ currentUser, setCurrentUser }) => {
           className="login_wrapper text-white"
           style={{ padding: "240px 0 20px", maxWidth: "460px", margin: "auto" }}
         >
+          <div className="d-flex flex-column align-items-center justify-content-center pb-5">
+            <UserIcon width={"125px"} height={"125px"} fill={"#F5F2F2"} />
+            <h2 className="display-4 pt-2">Login</h2>
+          </div>
           {/* {currentUser && <div>{currentUser}</div>} */}
           <div className="mb-3">
             <label htmlFor="loginEmail" className="form-label">

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { Container } from "../styles/styles";
 
 const SeatCategoriesComponent = () => {
   // card information
@@ -36,6 +35,7 @@ const SeatCategoriesComponent = () => {
   ];
   // hooks
   const cardRef = useRef(null);
+  const constraintsRef = useRef(null);
   const [cardWidthWithPadding, setCardWidthWithPadding] = useState(0);
   const [cardsAmountInScreen, setCardsAmountInScreen] = useState(0);
   // desktop slider's arrow
@@ -43,7 +43,7 @@ const SeatCategoriesComponent = () => {
 
   // mobile drag
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updateCardInfo = () => {
       setCardWidthWithPadding(cardRef.current.getBoundingClientRect().width);
       setCardsAmountInScreen(
@@ -51,7 +51,6 @@ const SeatCategoriesComponent = () => {
       );
     };
 
-    console.log(cardWidthWithPadding);
     updateCardInfo(); // 初次渲染時計算一次card width、card amount
 
     window.addEventListener("resize", updateCardInfo);
@@ -98,44 +97,47 @@ const SeatCategoriesComponent = () => {
               </svg>
             </motion.div>
           </div>
-          <motion.div className="seat-categories_slider">
-            <motion.ul
-              className="seat-categories_list"
-              drag="x"
-              dragConstraints={{
-                right: cardWidthWithPadding,
-                left:
-                  -(cardContent.length - cardsAmountInScreen) *
-                  cardWidthWithPadding,
-              }}
-              dragElastic={0.3}
-              animate={controls}
-            >
-              <AnimatePresence>
-                {cardContent.map((card, index) => {
-                  return (
-                    <motion.li
-                      ref={cardRef}
-                      className="seat-categories_card"
-                      key={index}
-                    >
-                      <div className="seat-categories_card-image">
-                        <img src={card.img_src} alt={card.img_alt} />
-                      </div>
-                      <div className="seat-categories_card-categories">
-                        <h3 className="seat-categories_card-categories-title">
-                          {card.title}
-                        </h3>
-                        <span className="seat-categories_card-categories-description">
-                          {card.description}
-                        </span>
-                      </div>
-                    </motion.li>
-                  );
-                })}
-              </AnimatePresence>
-            </motion.ul>
-          </motion.div>
+          <div ref={constraintsRef} className="seat-categories_slider">
+            <div>
+              <motion.ul
+                className="seat-categories_list"
+                drag="x"
+                // dragConstraints={{
+                //   right: cardWidthWithPadding,
+                //   left:
+                //     -(cardContent.length - cardsAmountInScreen) *
+                //     cardWidthWithPadding,
+                // }}
+                dragConstraints={constraintsRef}
+                dragElastic={0.3}
+                animate={controls}
+              >
+                <AnimatePresence>
+                  {cardContent.map((card, index) => {
+                    return (
+                      <motion.li
+                        ref={cardRef}
+                        className="seat-categories_card"
+                        key={index}
+                      >
+                        <div className="seat-categories_card-image">
+                          <img src={card.img_src} alt={card.img_alt} />
+                        </div>
+                        <div className="seat-categories_card-categories">
+                          <h3 className="seat-categories_card-categories-title">
+                            {card.title}
+                          </h3>
+                          <span className="seat-categories_card-categories-description">
+                            {card.description}
+                          </span>
+                        </div>
+                      </motion.li>
+                    );
+                  })}
+                </AnimatePresence>
+              </motion.ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>

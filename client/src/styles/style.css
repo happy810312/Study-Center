@@ -255,22 +255,28 @@ header.header-dark div.header-container nav.header-navigation ul.header-menu li 
 header.header-dark div.header-container nav.header-navigation ul.header-menu li li a:hover {
   color: #151618;
 }
-header.header-dark div.header-container nav.header-navigation ul.header-menu li.menu-company a svg {
+header.header-dark div.header-container nav.header-navigation ul.header-menu li.menu-company svg {
   fill: #f5f6f6;
 }
-header.header-dark div.header-container ul.header-btn li a {
+header.header-dark div.header-container nav.header-navigation ul.header-menu li.menu-company ul li a {
+  color: #151618;
+}
+header.header-dark div.header-container nav.header-navigation ul.header-menu li.menu-company ul li > a::after {
+  background-color: #151618;
+}
+header.header-dark div.header-container ul.header-btn_desktop li a {
   color: #f5f6f6;
 }
-header.header-dark div.header-container ul.header-btn li:first-child a {
+header.header-dark div.header-container ul.header-btn_desktop li:first-child a {
   color: #151618;
   border: 1px solid #f5f6f6;
   background-color: #f5f6f6;
 }
 
 div.header-mobile_menu {
-  height: calc(100% - 5.1825rem);
-  background-color: #fff;
-  transition: all 0.3s;
+  min-height: 100vh;
+  background-color: #f5f6f6;
+  transition: all 1s;
 }
 div.header-mobile_menu div.header-mobile_menu_wrapper {
   padding: 80px 0 160px 0;
@@ -323,6 +329,27 @@ div.header-mobile_menu div.header-mobile_menu_wrapper nav.header-mobile_navigati
   font-weight: 500;
   line-height: 1.2;
   padding-bottom: 24px;
+}
+div.header-mobile_menu div.header-mobile_menu_wrapper ul.header-mobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+div.header-mobile_menu div.header-mobile_menu_wrapper ul.header-mobile li {
+  width: -moz-max-content;
+  width: max-content;
+  font-size: 2rem;
+  font-weight: 600;
+}
+div.header-mobile_menu div.header-mobile_menu_wrapper ul.header-mobile li:first-child {
+  background-color: #007bff;
+  border-radius: 2rem;
+  margin-bottom: 2rem;
+}
+div.header-mobile_menu div.header-mobile_menu_wrapper ul.header-mobile li:first-child a {
+  color: #f5f6f6;
+  padding: 0.75rem 1.25rem;
 }
 
 @media screen and (max-width: 992px) {

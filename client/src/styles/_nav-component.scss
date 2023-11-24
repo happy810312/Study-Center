@@ -207,22 +207,30 @@ header.header-dark {
           }
         }
         li.menu-company {
-          a {
-            svg {
-              fill: #f5f6f6;
+          svg {
+            fill: #f5f6f6;
+          }
+          ul {
+            li {
+              a {
+                color: $color-dark;
+              }
+              & > a::after {
+                background-color: $color-dark;
+              }
             }
           }
         }
       }
     }
-    ul.header-btn {
+    ul.header-btn_desktop {
       li {
         a {
           color: $color-grey-light;
         }
         &:first-child {
           a {
-            color: #151618;
+            color: $color-dark;
             border: 1px solid $color-grey-light;
             background-color: $color-grey-light;
           }
@@ -233,9 +241,9 @@ header.header-dark {
 }
 
 div.header-mobile_menu {
-  height: calc(100% - 5.1825rem);
-  background-color: $color-white;
-  transition: all 0.3s;
+  min-height: 100vh;
+  background-color: $color-grey-light;
+  transition: all 1s;
   div.header-mobile_menu_wrapper {
     padding: 80px 0 160px 0;
     nav.header-mobile_navigation {
@@ -286,6 +294,26 @@ div.header-mobile_menu {
               line-height: 1.2;
               padding-bottom: 24px;
             }
+          }
+        }
+      }
+    }
+    ul.header-mobile {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      li {
+        width: max-content;
+        font-size: 2rem;
+        font-weight: 600;
+        &:first-child {
+          background-color: $color-blue;
+          border-radius: 2rem;
+          margin-bottom: 2rem;
+          a {
+            color: $color-grey-light;
+            padding: 0.75rem 1.25rem;
           }
         }
       }

@@ -1,13 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { motion, useCycle } from "framer-motion";
 import AuthService from "../services/auth-service";
 import { LogoIcon, ArrowDownIcon } from "../components/icons";
 
 const NavComponent = ({ currentUser, setCurrentUser }) => {
   const [navBarClass, setNavBarClass] = useState("header-grey-light");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrollingDown, setScrollingDown] = useState(false);
   const navRef = useRef(null);
   const location = useLocation();
+
+  // framer motion 切換手機版漢堡
+  // const [isOpen, toggleOpen] = useCycle(false, true);
+  // const variants = {
+  //   open: {
+  //     y: 0,
+  //     opacity: 1,
+  //     transition: {
+  //       y: { stiffness: 1000, velocity: -100 },
+  //     },
+  //   },
+  //   closed: {
+  //     y: 50,
+  //     opacity: 0,
+  //     transition: {
+  //       y: { stiffness: 1000 },
+  //     },
+  //   },
+  // };
 
   const handleLogout = () => {
     AuthService.logout();
@@ -23,6 +44,23 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
     }
     setIsMenuOpen(!isMenuOpen);
   };
+  const checkScrollDirection = () => {
+    let lastScrollTop = 0;
+    return () => {
+      const currentScrollTop = window.scrollY;
+
+      // 使用callback避免同時觸發兩個條件
+      setScrollingDown((prevScrollingDown) => {
+        if (!prevScrollingDown && currentScrollTop > lastScrollTop) {
+          return true;
+        } else if (prevScrollingDown && currentScrollTop < lastScrollTop) {
+          return false;
+        }
+        return prevScrollingDown;
+      });
+      lastScrollTop = currentScrollTop;
+    };
+  };
 
   // mobile版畫面突然變大，且menu還是放下的狀態 => 自動縮回
   useEffect(() => {
@@ -30,6 +68,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
       const width = window.innerWidth;
       if (width >= 992 && isMenuOpen) {
         setIsMenuOpen(false);
+        handleMenuOpen();
       }
     };
     window.addEventListener("resize", handleResize);
@@ -69,20 +108,35 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
         }
       });
     };
+    handleScroll(); // 初始化
+
+    // 初始化導覽列隱藏功能
+    const check = checkScrollDirection();
+
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+    console.log(scrollingDown);
 
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", check);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", check);
     };
     // pathname改變時會在執行一次
   }, [location.pathname]);
-
   return (
-    <header ref={navRef} className={`header ${navBarClass}`}>
+    <header
+      ref={navRef}
+      className={`header ${navBarClass}`}
+      style={
+        scrollingDown
+          ? { position: "relative", transition: "all 0.3s" }
+          : { position: "fixed", transition: "all 0.3s" }
+      }
+    >
       <div className="header-container">
         <section className="header-logo">
           <Link to="/">
@@ -159,11 +213,19 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
         </div>
       </div>
       {isMenuOpen && (
-        <div className="header-mobile_menu">
+        <motion.div
+          // initial={false}
+          // animatie={isOpen ? "open" : "closed"}
+          // variants={variants}
+          className="header-mobile_menu"
+        >
           <div className="container">
             <div className="header-mobile_menu_wrapper">
               <nav className="header-mobile_navigation">
                 <ul className="header-mobile_navigation-menu">
+                  <li className="header-mobile_navigation-list">
+                    <Link to="/">Home</Link>
+                  </li>
                   <li className="header-mobile_navigation-list">
                     <Link to="/news">News</Link>
                   </li>
@@ -194,9 +256,26 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
                   )}
                 </ul>
               </nav>
+              <ul className="header-mobile">
+                <li>
+                  <Link to="/plan">Book a Seat</Link>
+                </li>
+                {!currentUser && (
+                  <li>
+                    <Link to="/login">Login</Link>
+                  </li>
+                )}
+                {currentUser && (
+                  <li>
+                    <Link onClick={handleLogout} to="/">
+                      Logout
+                    </Link>
+                  </li>
+                )}
+              </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </header>
   );

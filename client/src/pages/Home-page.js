@@ -1,47 +1,69 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { useSpring, animated } from "@react-spring/web";
+import { motion, useTransform, useScroll, useInView } from "framer-motion";
 
 import HomepagePrinter from "../components/Homepage-printer-component";
 import HomepageSlider from "../components/Homepage-slider-component";
 import SeatCategories from "../components/SeatCategories-component";
+import { ComputerIcon } from "../components/icons";
 
-const HomePage = ({ currentUser, setCurrentUser }) => {
-  const [showAnimation, setShowAnimation] = useState(false);
-  const [magicCardOpacity, setMagicCardOpacity] = useState(0);
-  const [magicCardTransform, setMagicCardTransform] = useState(0);
-  const margicCardRef = useRef(null);
-  const animationProps = useSpring({
-    opacity: showAnimation ? magicCardOpacity : 1,
-    transform: showAnimation
-      ? `translateY(-${magicCardTransform}px)`
-      : "translateY(0)",
+const HomePage = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  // framer motion
+  const pinRef = useRef(null);
+  const itemsRef = useRef(null);
+  const isInView = useInView(itemsRef, {
+    once: false,
+  });
+  const { scrollYProgress } = useScroll({
+    target: pinRef,
+    offset: ["start start", "end end"],
   });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const triggerPosition =
-        window.innerHeight * 5 + margicCardRef.current.offsetHeight / 1.33;
+  // 滑鼠滾動時調整的opacity及study magic內容
+  const scrollAnimationStyles = [
+    // scrollYProgress是[0,1]的數值，第二個參數最多就是[0,1]
+    {
+      img_src: "./images/homepage-images/login.png",
+      img_alt: "login",
+      description: "Join K Study Center",
+      opacity: useTransform(scrollYProgress, [0.15, 0.25], [1, 0]),
+    },
+    {
+      img_src: "./images/homepage-images/login.png",
+      img_alt: "login",
+      description: "On-Site seat arrangement",
+      opacity: useTransform(scrollYProgress, [0.4, 0.5], [1, 0]),
+    },
+    {
+      img_src: "./images/homepage-images/login.png",
+      img_alt: "login",
+      description: "Automated reminders are sent",
+      opacity: useTransform(scrollYProgress, [0.65, 0.75], [1, 0]),
+    },
+    {
+      img_src: "./images/homepage-images/login.png",
+      img_alt: "login",
+      description: "Admission Granted",
+      opacity: useTransform(scrollYProgress, [0.9, 1], [1, 1]),
+    },
+  ];
 
-      console.log(scrollPosition, triggerPosition);
-      console.log(margicCardRef.current.offsetHeight);
-      if (scrollPosition >= triggerPosition) {
-        setShowAnimation(true);
-        setMagicCardOpacity(
-          Math.max(1 - (window.scrollY - triggerPosition) / 250, 0)
-        );
-        setMagicCardTransform(
-          Math.min(window.scrollY - triggerPosition) / 50,
-          100
-        );
-      } else {
-        setShowAnimation(false);
+  //
+
+  useEffect(() => {
+    const handleCheckMobile = () => {
+      const screenWidth = window.innerWidth;
+      if (!isMobile && screenWidth <= 768) {
+        setIsMobile(true);
+      } else if (isMobile && screenWidth >= 768) {
+        setIsMobile(false);
       }
     };
-    window.addEventListener("scroll", handleScroll);
+    console.log(isMobile);
+    window.addEventListener("resize", handleCheckMobile);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleCheckMobile);
     };
   }, []);
 
@@ -106,12 +128,7 @@ const HomePage = ({ currentUser, setCurrentUser }) => {
               reservations.
             </h2>
             <div className="study-center-achievement_info">
-              <img
-                src="./images/homepage-images/moon.png"
-                alt="test"
-                width={400}
-                height={300}
-              />
+              <img src="./images/homepage-images/moon.png" alt="test" />
               <div className="study-center-achievement_info-text">
                 <p>
                   Enhance <span>on-site</span> efficiency by reserving your seat
@@ -220,15 +237,19 @@ const HomePage = ({ currentUser, setCurrentUser }) => {
                   push the most important information out so that users can
                   choose how often they'd like to check-in.
                 </p>
-                <img
-                  src="./images/homepage-images/admission-Information.jpg"
-                  alt="admission-information"
-                />
-                <p className="more-for-study-center_description">
-                  <span className="number">2+ hours</span>On average, readers at
-                  K Study Center can save over per day while achieving the same
-                  study progress.
-                </p>
+                <div className="more-for-study-center_info-img">
+                  <img
+                    src="./images/homepage-images/admission-Information.jpg"
+                    alt="admission-information"
+                  />
+                </div>
+                <div className="more-for-study-center_description">
+                  <span className="number">2+ hours</span>
+                  <span className="info">
+                    On average, readers at K Study Center can save over per day
+                    while achieving the same study progress.
+                  </span>
+                </div>
                 <div className="more-for-study-center_link">
                   <Link to="/news">Learn more</Link>
                 </div>
@@ -236,48 +257,38 @@ const HomePage = ({ currentUser, setCurrentUser }) => {
             </div>
             <div className="more-for-study-center_items">
               <ul className="more-for-study-center_items-list">
-                <li className="more-for-study-center_item">
+                <motion.li
+                  ref={itemsRef}
+                  className="more-for-study-center_item"
+                  style={
+                    isMobile && {
+                      transform: isInView ? "none" : "translateX(-200px)",
+                      opacity: isInView ? 1 : 0,
+                      transition:
+                        "all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1) 0.1s",
+                    }
+                  }
+                >
                   <div className="icon">
-                    <svg
-                      fill="#000000"
-                      height="50"
-                      width="50"
-                      version="1.1"
-                      id="Layer_1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                    >
-                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        {" "}
-                        <g>
-                          {" "}
-                          <g>
-                            {" "}
-                            <path d="M304.056,150h-284C9.028,150,0,157.744,0,168.768v176C0,355.796,9.028,366,20.056,366H116v40.524l-21.856,14.808 c-1.456,0.988-2.088,3.484-1.572,5.164S94.648,430,96.404,430h131.292c0.024,0,0.06,0,0.08,0c2.212,0,4-2.468,4-4.676 c0-1.592-0.964-3.312-2.316-3.952L208,406.524V366h96.056C315.084,366,324,355.796,324,344.768v-176 C324,157.744,315.084,150,304.056,150z M172,374.536c0,5.604-4.392,10.168-10,10.168c-5.608,0-10-4.56-10-10.168V366h20V374.536z M300,342H24V174h276V342z"></path>{" "}
-                          </g>{" "}
-                        </g>{" "}
-                        <g>
-                          {" "}
-                          <g>
-                            {" "}
-                            <path d="M484,82H368c-15.464,0-28,12.536-28,28v292c0,15.464,12.536,28,28,28h116c15.464,0,28-12.536,28-28V110 C512,94.536,499.464,82,484,82z M409.984,109.02c5.516,0,10,4.488,10,10c0,5.512-4.484,10-10,10s-10-4.488-10-10 C399.984,113.508,404.468,109.02,409.984,109.02z M378.056,105.02c7.72,0,14,6.28,14,14c0,7.72-6.28,14-14,14 c-7.72,0-14-6.28-14-14C364.056,111.3,370.336,105.02,378.056,105.02z M479.8,398H372.064c-4.416,0-8-3.584-8-8 c0-4.416,3.584-8,8-8h107.74c4.416,0,8,3.584,8,8C487.804,394.416,484.22,398,479.8,398z M479.8,370H372.064c-4.416,0-8-3.584-8-8 c0-4.416,3.584-8,8-8h107.74c4.416,0,8,3.584,8,8C487.804,366.416,484.22,370,479.8,370z M479.8,342H372.064c-4.416,0-8-3.584-8-8 c0-4.416,3.584-8,8-8h107.74c4.416,0,8,3.584,8,8C487.804,338.416,484.22,342,479.8,342z M479.8,314H372.064c-4.416,0-8-3.584-8-8 c0-4.416,3.584-8,8-8h107.74c4.416,0,8,3.584,8,8C487.804,310.416,484.22,314,479.8,314z M479.8,286H372.064c-4.416,0-8-3.584-8-8 c0-4.416,3.584-8,8-8h107.74c4.416,0,8,3.584,8,8C487.804,282.416,484.22,286,479.8,286z M488,250c0,2.208-1.788,4-4,4H368 c-2.212,0-4-1.792-4-4v-32c0-2.208,1.788-4,4-4h116c2.212,0,4,1.792,4,4V250z"></path>{" "}
-                          </g>{" "}
-                        </g>{" "}
-                      </g>
-                    </svg>
+                    <ComputerIcon />
                   </div>
                   <span>
                     Online seat reservation inquiry. Leave the brain-teasers to
                     us.
                   </span>
-                </li>
-                <li className="more-for-study-center_item">
+                </motion.li>
+                <motion.li
+                  ref={itemsRef}
+                  className="more-for-study-center_item"
+                  style={
+                    isMobile && {
+                      transform: isInView ? "none" : "translateX(-200px)",
+                      opacity: isInView ? 1 : 0,
+                      transition:
+                        "all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1) 0.1s",
+                    }
+                  }
+                >
                   <div className="icon">
                     <svg
                       fill="#000000"
@@ -314,8 +325,19 @@ const HomePage = ({ currentUser, setCurrentUser }) => {
                     </svg>
                   </div>
                   <span>Tailoring seat options to your reading habits.</span>
-                </li>
-                <li className="more-for-study-center_item">
+                </motion.li>
+                <motion.li
+                  ref={itemsRef}
+                  className="more-for-study-center_item"
+                  style={
+                    isMobile && {
+                      transform: isInView ? "none" : "translateX(-200px)",
+                      opacity: isInView ? 1 : 0,
+                      transition:
+                        "all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1) 0.1s",
+                    }
+                  }
+                >
                   <div className="icon">
                     <svg
                       fill="#000000"
@@ -355,8 +377,19 @@ const HomePage = ({ currentUser, setCurrentUser }) => {
                     Providing readers with tea bags and a relaxation area to
                     keep you refreshed.
                   </span>
-                </li>
-                <li className="more-for-study-center_item">
+                </motion.li>
+                <motion.li
+                  ref={itemsRef}
+                  className="more-for-study-center_item"
+                  style={
+                    isMobile && {
+                      transform: isInView ? "none" : "translateX(-200px)",
+                      opacity: isInView ? 1 : 0,
+                      transition:
+                        "all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1) 0.1s",
+                    }
+                  }
+                >
                   <div className="icon">
                     <svg
                       fill="#000000"
@@ -396,7 +429,7 @@ const HomePage = ({ currentUser, setCurrentUser }) => {
                     Offering the highest-quality environment for academic
                     success.
                   </span>
-                </li>
+                </motion.li>
               </ul>
               <div className="more-for-study-center-items_image">
                 <img
@@ -416,81 +449,60 @@ const HomePage = ({ currentUser, setCurrentUser }) => {
           </div>
         </div>
       </section>
-      <section className="studying-magic trigger-for-header-dark">
+      <section ref={pinRef} className="studying-magic trigger-for-header-dark">
         <div className="container">
           <div className="studying-magic_wrapper">
             <h2 className="studying-magic_title">
-              Studying made so easy; it feels like magic.
+              {`Studying made so easy;\nit feels like magic.`}
             </h2>
             <span className="studying-magic_subtitle">
               You can select your seat with just one finger.
             </span>
             <div className="studying-magic_card-interactive">
-              <div className="studying-magic_pin-spacer">
-                <div className="studying-magic_cards">
-                  <ul
-                    ref={margicCardRef}
-                    className="studying-magic_card-list"
-                    style={
-                      showAnimation
-                        ? {
-                            position: "fixed",
-                            top: margicCardRef.current.getBoundingClientRect()
-                              .top,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            padding: "0 1rem",
-                          }
-                        : { position: "relative" }
-                    }
-                  >
-                    <li className="studying-magic_card studying-magic_card-0">
-                      <animated.div
-                        className="studying-magic_card-image"
-                        style={animationProps}
-                      >
-                        <img
-                          src="./images/homepage-images/login.png"
-                          alt="login"
-                          width={500}
-                          height={500}
-                        />
-                      </animated.div>
-                      <animated.div
-                        className="studying-magic_card-description"
-                        style={animationProps}
-                      >
-                        <span className="studying-magic_card-step">STEP1</span>
-                        <h3 className="studying-magic_card-step">
-                          Join K Study Center
-                        </h3>
-                      </animated.div>
-                    </li>
-                    {/* <li className="studying-magic_card studying-magic_card-1">
-                      <div className="studying-magic_card-image"></div>
-                      <div className="studying-magic_card-description">
-                        <span className="studying-magic_card-step">STEP2</span>
-                        <h3 className="studying-magic_card-step">
-                          On-Site seat arrangement
-                        </h3>
+              {/* 進度條 */}
+              <motion.div
+                className="progress-bar"
+                style={{
+                  scaleX: scrollYProgress,
+                  position: "fixed",
+                  zIndex: "10",
+                  top: "0",
+                  left: "0",
+                  right: "0",
+                  height: "10px",
+                  backgroundColor: "red",
+                  transformOrigin: "0%",
+                }}
+              />
+              <div className="studying-magic_cards">
+                <ul className="studying-magic_card-list">
+                  {scrollAnimationStyles.map((card, index) => {
+                    return (
+                      <div className="studying-magic_card-interactives">
+                        <div className="studying-magic_mobile-empty"></div>
+                        <motion.li
+                          style={{
+                            opacity: card.opacity,
+                          }}
+                          className="studying-magic_card studying-magic_card-0"
+                        >
+                          <div className="studying-magic_card-image">
+                            <img src={card.img_src} alt={card.img_alt} />
+                          </div>
+                          <div className="studying-magic_card-description">
+                            <span className="studying-magic_card-step">
+                              {`STEP ${index + 1}`}
+                            </span>
+                            <h3 className="studying-magic_card-step">
+                              {card.description}
+                            </h3>
+                          </div>
+                        </motion.li>
+                        <div className="studying-magic_desktop-empty"></div>
                       </div>
-                    </li>
-                    <li className="studying-magic_card studying-magic_card-2">
-                      <div className="studying-magic_card-image"></div>
-                      <div className="studying-magic_card-description">
-                        <span>STEP3</span>
-                        <h3>Automated reminders are sent</h3>
-                      </div>
-                    </li>
-                    <li className="studying-magic_card studying-magic_card-3">
-                      <div className="studying-magic_card-image"></div>
-                      <div className="studying-magic_card-description">
-                        <span>STEP4</span>
-                        <h3>Admission Granted</h3>
-                      </div>
-                    </li> */}
-                  </ul>
-                </div>
+                    );
+                  })}
+                </ul>
               </div>
             </div>
           </div>

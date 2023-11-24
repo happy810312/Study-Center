@@ -1,86 +1,89 @@
 section.seat-categories {
-  overflow: hidden;
-  div.seat-categories_wrapper {
-    position: relative;
-    padding: 180px 0;
-    h2.seat-categories_title {
-      font-size: 3.5rem;
-      font-weight: 600;
-      padding-bottom: 60px;
-    }
-    div.seat-categories_nav-slider {
-      position: absolute;
-      right: 2rem;
-      top: 265px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 100px;
-      width: 100%;
-      div.seat-categories_nav-slider-left,
-      div.seat-categories_nav-slider-right {
-        border: 1px solid rgba($color-grey-dark, 0.3);
-        border-radius: 50%;
-        cursor: pointer;
-        transition: 0.5s;
-        svg {
-          fill: $color-dark;
-        }
-        &:hover {
-          background-color: $color-dark;
+  .container {
+    overflow: hidden;
+    div.seat-categories_wrapper {
+      position: relative;
+      padding: 180px 0;
+      h2.seat-categories_title {
+        font-size: 3.5rem;
+        font-weight: 600;
+        text-align: center;
+        padding-bottom: 120px;
+      }
+      div.seat-categories_nav-slider {
+        position: absolute;
+        right: 2rem;
+        top: 265px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 100px;
+        width: 100%;
+        div.seat-categories_nav-slider-left,
+        div.seat-categories_nav-slider-right {
+          border: 1px solid rgba($color-grey-dark, 0.3);
+          border-radius: 50%;
+          cursor: pointer;
+          transition: 0.5s;
           svg {
-            fill: $color-white;
+            fill: $color-dark;
+          }
+          &:hover {
+            background-color: $color-dark;
+            svg {
+              fill: $color-white;
+            }
           }
         }
       }
-    }
-    div.seat-categories_slider {
-      transition: 0.5s;
-      ul.seat-categories_list {
-        white-space: nowrap;
-        li.seat-categories_card {
-          display: inline-block;
-          max-width: 420px;
-          vertical-align: top;
+      div.seat-categories_slider {
+        transition: 0.5s;
+        ul.seat-categories_list {
+          white-space: nowrap;
           width: 100%;
-          border-radius: 1rem;
-          padding: 1rem;
-          overflow: hidden;
-          &:hover {
-            cursor: pointer;
-            .seat-categories_card-image {
-              img {
-                transform: scale(1.2);
+          li.seat-categories_card {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+            border-radius: 1rem;
+            padding: 1rem;
+            transform: translateX(-50%);
+            &:hover {
+              cursor: pointer;
+              .seat-categories_card-image {
+                img {
+                  transform: scale(1.2);
+                }
               }
             }
-          }
-          .seat-categories_card-image {
-            width: 100%;
-            border-radius: 1rem; // 只對img設定border-radius會沒辦法讓下半邊也是圓弧
-            margin-bottom: 10px; // 使用padding，scale時仍可以往下拓展
-            overflow: hidden;
-            img {
+            .seat-categories_card-image {
               width: 100%;
-              border-radius: 1rem;
-              vertical-align: middle;
-              transition: transform 0.3s;
+              border-radius: 1rem; // 只對img設定border-radius會沒辦法讓下半邊也是圓弧
+              margin-bottom: 10px; // 使用padding，scale時仍可以往下拓展
+              overflow: hidden;
+              img {
+                width: 100%;
+                border-radius: 1rem;
+                vertical-align: middle;
+                transition: transform 0.3s;
+              }
             }
-          }
-          div.seat-categories_card-categories {
-            white-space: normal;
-            h3.seat-categories_card-categories-title {
-              font-size: 1.25rem;
-              font-weight: 600;
-              color: $color-dark;
-              letter-spacing: 1.2;
-              line-height: 1.2;
-              padding-bottom: 10px;
-            }
-            span.seat-categories_card-categories-description {
-              display: block;
-              font-size: 1rem;
-              text-align: justify;
-              color: $color-grey-dark;
+            div.seat-categories_card-categories {
+              white-space: normal;
+              h3.seat-categories_card-categories-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: $color-dark;
+                letter-spacing: 1.2;
+                line-height: 1.2;
+                padding-bottom: 10px;
+              }
+              span.seat-categories_card-categories-description {
+                display: block;
+                font-size: 1.15rem;
+                text-align: justify;
+                color: $color-grey-dark;
+              }
             }
           }
         }
@@ -102,9 +105,13 @@ section.seat-categories {
       div.seat-categories_slider {
         ul.seat-categories_list {
           li.seat-categories_card {
-            max-width: 300px;
+            // max-width: 300px;
             div.seat-categories_card-categories {
+              h3.seat-categories_card-categories-title {
+                font-size: 1.25rem;
+              }
               span.seat-categories_card-categories-description {
+                font-size: 0.9rem;
                 text-align: left;
               }
             }

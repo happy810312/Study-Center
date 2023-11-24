@@ -25,7 +25,7 @@ section.home-hero {
           width: 100%;
           height: 7rem;
           text-align: center;
-          margin: 0 auto 60px;
+          margin-bottom: 60px;
           span {
             font-size: 4rem;
             font-weight: 700;
@@ -89,8 +89,7 @@ section.home-hero {
       }
       div.home-hero_description {
         display: flex;
-        justify-content: space-between;
-        max-width: 800px;
+        justify-content: space-around;
         width: 100%;
         margin: auto;
         padding: 32px 0;
@@ -149,16 +148,6 @@ section.home-hero {
       }
     }
   }
-
-  // 圖片跑馬燈動畫
-  @keyframes slider {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-100%);
-    }
-  }
 }
 section.study-center-achievement {
   div.study-center-achievement_wrapper {
@@ -184,11 +173,14 @@ section.study-center-achievement {
       padding: 16px;
       margin: 60px auto 20px;
       img {
+        width: 400px;
+        height: 300px;
         border-radius: 1rem;
       }
       div.study-center-achievement_info-text {
         max-width: 425px;
         width: 100%;
+        padding: 1.5rem;
         p {
           font-size: 1.5rem;
           font-weight: 600;
@@ -205,13 +197,14 @@ section.study-center-achievement {
       justify-content: space-between;
       max-width: 1000px;
       width: 100%;
+      padding-left: 0;
       margin: auto;
       li.mini-card {
         max-width: 312px;
         width: 100%;
         background-color: $color-grey-light;
         border-radius: 1rem;
-        padding: 40px;
+        padding: 2.5rem;
         div.icon {
           width: 100%;
           height: 72px;
@@ -265,16 +258,22 @@ section.more-for-study-center {
           font-weight: 600;
           color: $color-grey-dark;
           line-height: 1.25;
+        }
+        div.more-for-study-center_description {
+          font-size: 1rem;
+          font-weight: 600;
+          color: $color-grey-dark;
+          line-height: 1.25;
           text-align: justify;
+          span.number {
+            display: block;
+            font-size: 5rem;
+            color: $color-dark;
+          }
           &:last-of-type {
             max-width: 360px;
             width: 100%;
             text-align: left;
-            span.number {
-              display: block;
-              font-size: 5rem;
-              color: $color-dark;
-            }
           }
         }
         img {
@@ -357,6 +356,7 @@ section.studying-magic {
       width: 100%;
       font-size: 4.2rem;
       font-weight: 600;
+      white-space: pre-line;
       color: $color-white;
       text-align: center;
       margin: auto;
@@ -369,30 +369,39 @@ section.studying-magic {
       color: $color-grey-dark;
     }
     div.studying-magic_card-interactive {
-      div.studying-magic_pin-spacer {
-        padding-bottom: 3640px;
-        div.studying-magic_cards {
-          position: relative;
-          margin: auto;
-          ul.studying-magic_card-list {
-            max-width: 1240px;
-            width: 100%;
-            padding: 0;
+      div.studying-magic_cards {
+        position: relative;
+        margin: auto;
+        ul.studying-magic_card-list {
+          max-width: 1240px;
+          width: 100%;
+          padding: 0;
+          div.studying-magic_card-interactives {
+            &:first-child {
+              padding-top: 180px;
+            }
+            .studying-magic_desktop-empty {
+              display: block;
+              height: 32rem;
+            }
+            // .studying-magic_mobile-empty {
+            //   display: block;
+            //   height: 64rem;
+            // }
             li.studying-magic_card {
+              position: -webkit-sticky;
+              position: sticky;
+              top: 50vh;
+              transform: translateY(-50%);
               display: flex;
               justify-content: space-between;
               align-items: center;
-              &:not(:first-child) {
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 100%;
-              }
               div.studying-magic_card-image {
                 max-width: 582px;
                 width: 100%;
                 max-height: 520px;
                 img {
+                  max-width: 100%;
                   vertical-align: middle;
                 }
               }
@@ -413,6 +422,7 @@ section.studying-magic {
                   padding-bottom: 64px;
                 }
                 h3.studying-magic_card-step {
+                  display: block;
                   font-size: 1.5rem;
                   font-weight: 600;
                   line-height: 1.2;
@@ -422,6 +432,437 @@ section.studying-magic {
             }
           }
         }
+      }
+    }
+  }
+}
+
+// 圖片跑馬燈動畫
+@keyframes slider {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@media screen and (max-width: 992px) {
+  section.home-hero {
+    background-image: linear-gradient(
+      180deg,
+      $color-grey-light 0%,
+      $color-grey-light 60%,
+      $color-dark 60%,
+      $color-dark 100%
+    );
+  }
+  section.study-center-achievement {
+    div.study-center-achievement_wrapper {
+      h2.study-center-achievement_title {
+        font-size: 2.5rem;
+      }
+    }
+  }
+  section.more-for-study-center {
+    div.more-for-study-center_wrapper {
+      div.more-for-study-center_info {
+        div.more-for-study-center_image {
+          left: -75%;
+          img {
+            width: 75%;
+            height: 75%;
+          }
+        }
+      }
+      div.more-for-study-center_items {
+        div.more-for-study-center-items_image {
+          img.more-for-study-center-items_image-reservation {
+            top: 25%;
+            width: 75%;
+          }
+          img.more-for-study-center-items_image-seats {
+            left: 80%;
+            top: 10%;
+            width: 30%;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 850px) {
+  section.more-for-study-center {
+    div.more-for-study-center_wrapper {
+      div.more-for-study-center_info {
+        div.more-for-study-center_image {
+          left: -95%;
+        }
+      }
+    }
+  }
+  section.studying-magic {
+    div.studying-magic_wrapper {
+      h2.studying-magic_title {
+        font-size: 2.85rem;
+      }
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  section.home-hero {
+    background-image: linear-gradient(
+      180deg,
+      $color-grey-light 0%,
+      $color-grey-light 50%,
+      $color-dark 50%,
+      $color-dark 100%
+    );
+    div.container {
+      div.home-hero_wrapper {
+        div.home-hero_title {
+          h1.title {
+            margin-bottom: 30px;
+            span {
+              font-size: 3rem;
+            }
+          }
+        }
+        div.home-hero_description {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          div.home-hero_description-left,
+          div.home-hero_description-right {
+            max-width: none;
+            width: 100%;
+            padding: 0 2rem 2rem 2rem;
+          }
+          div.home-hero_description-right {
+            padding-bottom: 0;
+            p {
+              span.number {
+                display: block;
+                text-align: center;
+                padding-bottom: 1rem;
+              }
+              span.little {
+                font-size: 1.25rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  section.study-center-achievement {
+    div.study-center-achievement_wrapper {
+      h2.study-center-achievement_title {
+        font-size: 2.25rem;
+      }
+      div.study-center-achievement_info {
+        display: flex;
+        flex-direction: column;
+        div.study-center-achievement_info-text {
+          max-width: none;
+          padding: 1.25rem;
+          p {
+            font-size: 1.25rem;
+          }
+        }
+      }
+      ul.study-center-achievement_items {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+        gap: 20px;
+        li.mini-card {
+          max-width: none;
+          &:last-child {
+            grid-area: 2/1/3/3;
+          }
+        }
+      }
+    }
+  }
+  section.more-for-study-center {
+    div.more-for-study-center_wrapper {
+      div.more-for-study-center_info {
+        display: flex;
+        flex-direction: column;
+        div.more-for-study-center_image {
+          position: relative;
+          left: 0;
+          top: 0;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        div.more-for-study-center_info-text {
+          max-width: none;
+          h2.more-for-study-center_title {
+            text-align: center;
+          }
+          div.more-for-study-center_info-img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          p.more-for-study-center_description {
+            text-align: center;
+          }
+          div.more-for-study-center_description {
+            text-align: right;
+            span.number {
+              display: block;
+            }
+            span.info {
+              display: block;
+              max-width: 300px;
+              width: 100%;
+              text-align: left;
+              margin-left: auto;
+              padding-top: 1.5rem;
+            }
+          }
+          div.more-for-study-center_link {
+            margin-left: auto;
+            margin-right: auto;
+          }
+        }
+      }
+      div.more-for-study-center_items {
+        ul.more-for-study-center_items-list {
+          flex-direction: column;
+          li.more-for-study-center_item {
+            display: flex;
+            background-color: $color-white;
+            border-radius: 2rem;
+            padding: 0;
+            margin-bottom: 1rem;
+            div.icon {
+              width: 60px;
+              height: 60px;
+            }
+            span {
+              padding-left: 1rem;
+              margin: auto;
+            }
+          }
+        }
+        div.more-for-study-center-items_image {
+          img.more-for-study-center-items_image-reservation {
+            left: 70%;
+            top: 10%;
+            width: 100%;
+          }
+          img.more-for-study-center-items_image-seats {
+            left: 55%;
+            top: -10%;
+            width: 40%;
+          }
+        }
+      }
+    }
+  }
+  section.studying-magic {
+    div.studying-magic_wrapper {
+      padding-bottom: 0;
+      h2.studying-magic_title {
+        padding-bottom: 20px;
+      }
+      span.studying-magic_subtitle {
+        padding-bottom: 120px;
+      }
+      div.studying-magic_card-interactive {
+        div.studying-magic_cards {
+          ul.studying-magic_card-list {
+            div.studying-magic_card-interactives {
+              .studying-magic_desktop-empty :not(:last-child) {
+                height: 64rem;
+              }
+              li.studying-magic_card {
+                flex-direction: column;
+                div.studying-magic_card-description {
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 576px) {
+  section.home-hero {
+    background-image: linear-gradient(
+      180deg,
+      $color-grey-light 0%,
+      $color-grey-light 45%,
+      $color-dark 45%,
+      $color-dark 100%
+    );
+    div.container {
+      div.home-hero_wrapper {
+        div.home-hero_title {
+          h1.title {
+            margin-bottom: 15px;
+            span {
+              font-size: 2.5rem;
+            }
+          }
+        }
+        div.home-hero_slider-title {
+          padding: 32px 0 16px;
+          h2 {
+            font-size: 1.25rem;
+          }
+        }
+      }
+    }
+  }
+  section.study-center-achievement {
+    div.study-center-achievement_wrapper {
+      h2.study-center-achievement_title {
+        font-size: 2rem;
+      }
+      div.study-center-achievement_info {
+        div.study-center-achievement_info-text {
+          padding: 1rem;
+          p {
+            font-size: 1.35rem;
+          }
+        }
+      }
+    }
+  }
+  section.more-for-study-center {
+    div.more-for-study-center_wrapper {
+      div.more-for-study-center_info {
+        padding-bottom: 100px;
+      }
+      div.more-for-study-center_items {
+        ul.more-for-study-center_items-list {
+          display: block;
+          padding-left: 0;
+          li.more-for-study-center_item {
+            max-width: none;
+            span {
+              text-align: left;
+            }
+          }
+        }
+        div.more-for-study-center-items_image {
+          display: none;
+        }
+      }
+    }
+  }
+  section.studying-magic {
+    div.studying-magic_wrapper {
+      h2.studying-magic_title {
+        font-size: 2.25rem;
+      }
+    }
+  }
+}
+@media screen and (max-width: 458px) {
+  section.home-hero {
+    div.container {
+      div.home-hero_wrapper {
+        div.home-hero_title {
+          padding-bottom: 45px;
+          h1.title {
+            margin-bottom: 15px;
+            span {
+              font-size: 2.15rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  section.study-center-achievement {
+    div.study-center-achievement_wrapper {
+      div.study-center-achievement_info {
+        display: flex;
+        flex-direction: column;
+        img {
+          width: 300px;
+          height: 200px;
+        }
+      }
+      ul.study-center-achievement_items {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+        gap: 20px;
+        li.mini-card {
+          span.number {
+            font-size: 2.25rem;
+          }
+        }
+      }
+    }
+  }
+  section.more-for-study-center {
+    div.more-for-study-center_wrapper {
+      div.more-for-study-center_info {
+        div.more-for-study-center_info-text {
+          h2.more-for-study-center_title {
+            font-size: 2.5rem;
+          }
+        }
+      }
+    }
+  }
+  section.studying-magic {
+    div.studying-magic_wrapper {
+      h2.studying-magic_title {
+        font-size: 2rem;
+      }
+    }
+  }
+}
+@media screen and (max-width: 387px) {
+  section.home-hero {
+    background-image: linear-gradient(
+      180deg,
+      $color-grey-light 0%,
+      $color-grey-light 40%,
+      $color-dark 40%,
+      $color-dark 100%
+    );
+    div.container {
+      div.home-hero_wrapper {
+        div.home-hero_title {
+          h1.title {
+            span {
+              font-size: 2rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  section.study-center-achievement {
+    div.study-center-achievement_wrapper {
+      ul.study-center-achievement_items {
+        li.mini-card {
+          span.number {
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+  }
+  section.studying-magic {
+    div.studying-magic_wrapper {
+      h2.studying-magic_title {
+        font-size: 1.85rem;
       }
     }
   }

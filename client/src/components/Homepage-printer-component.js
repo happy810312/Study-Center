@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const HomepagePrinterComponent = () => {
   let [letters, setLetters] = useState([]);
   const content = "Sttudying with\nModern and Efficiency";
+
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {

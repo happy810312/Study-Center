@@ -2,7 +2,7 @@ section.news {
   div.news_wrapper {
     max-width: 1000px;
     width: 100%;
-    padding: 180px 0;
+    padding: 180px 0 10px 0;
     margin: auto;
     div.news-content {
       padding-bottom: 80px;
@@ -140,6 +140,11 @@ section.news {
 @media screen and (max-width: 768px) {
   section.news {
     div.news_wrapper {
+      div.news-content {
+        span.news-subtitle {
+          font-size: 1rem;
+        }
+      }
       div.news-accordion {
         ul.news-accordion_list {
           li.news-accordion_card {
@@ -157,6 +162,11 @@ section.news {
 @media screen and (max-width: 576px) {
   section.news {
     div.news_wrapper {
+      div.news-content {
+        span.news-subtitle {
+          font-size: 0.9rem;
+        }
+      }
       div.news-accordion {
         ul.news-accordion_list {
           li.news-accordion_card {
@@ -188,7 +198,7 @@ section.news {
               }
             }
             span.news-accordion_card-content {
-              font-size: 0.9rem;
+              font-size: 0.85rem;
             }
           }
         }

@@ -9,6 +9,7 @@ $F-block-seats-amount: 16;
 // rain-sound-3F
 $L-left-block-seats-amount: 11;
 $L-right-block-seats-amount: 15;
+$V-top-block-seats-amount: 6;
 $V-left-block-seats-amount: 9;
 
 section.seat-reserved {
@@ -240,8 +241,8 @@ section.seat-reserved {
           "ll ll ll vt vt vt vt vt . . . . . . ."
           "ll ll ll . . . . . . . . . . . ."
           "ll ll ll lr lr . . . . . . . . vr vr"
-          "ll ll ll lr lr . . vb vb vb vb . . vr vr"
-          "ll ll ll lr lr vl vl vb vb vb vb . . vr vr";
+          "ll ll ll lr lr vl vl vl vb vb vb . . vr vr"
+          "ll ll ll lr lr vl vl vl vb vb vb . . vr vr";
         div.block {
           position: relative;
           border: 3px double $color-dark;
@@ -290,6 +291,14 @@ section.seat-reserved {
               grid-area: L#{$ten-digits}#{$digits};
             }
           }
+          @for $i from 1 through 4 {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.L#{$ten-digits}#{$digits} {
+              border-bottom: 2px solid $color-dark;
+              border-top: none;
+            }
+          }
           border-bottom-left-radius: 4.5rem;
         }
         div.block-L-right {
@@ -311,21 +320,37 @@ section.seat-reserved {
         }
         div.block-V-top {
           grid-area: vt;
-        }
-        div.block-V-bottom {
-          grid-area: vb;
+          grid-template-columns: 3fr 1fr 3fr;
+          grid-template-rows: repeat(3, 1fr);
+          grid-template-areas:
+            "V01 . V04"
+            "V02 . V05"
+            "V03 . V06";
+          @for $i from 1 through $V-top-block-seats-amount {
+            $ten-digits: floor($i/10);
+            $digits: $i%10;
+            div.seat-no.V#{$ten-digits}#{$digits} {
+              grid-area: V#{$ten-digits}#{$digits};
+              border-bottom: 2px solid $color-dark;
+              border-top: none;
+            }
+          }
+          span.block-name {
+            bottom: none;
+            top: 100%;
+          }
         }
         div.block-V-right {
           grid-area: vr;
         }
         div.block-V-left {
           grid-area: vl;
-          grid-template-columns: repeat(1, 1fr);
+          grid-template-columns: 2fr 1fr;
           grid-template-rows: repeat(3, 1fr);
           grid-template-areas:
-            "V07"
-            "V08"
-            "V09";
+            "V07 ."
+            "V08 ."
+            "V09 .";
           @for $i from 7 through $V-left-block-seats-amount {
             $ten-digits: floor($i/10);
             $digits: $i%10;

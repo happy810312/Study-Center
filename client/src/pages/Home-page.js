@@ -65,7 +65,7 @@ const HomePage = () => {
     return () => {
       window.removeEventListener("resize", handleCheckMobile);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <>
@@ -522,7 +522,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-      <section className="studying-minutes">
+      {/* <section className="studying-minutes">
         <div className="container">
           <div className="studying-minutes_wrapper">
             <h2 className="studying-minutes_title"></h2>
@@ -535,7 +535,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       <SeatCategories />
     </>
   );

@@ -1,4 +1,8 @@
 section.plan-type {
+  svg {
+    width: 100px;
+    height: 100px;
+  }
   div.plan-type_wrapper {
     padding: 180px 0;
     h2.plan-type_title {
@@ -63,6 +67,7 @@ section.plan-type {
         display: flex;
         justify-content: center;
         gap: 40px;
+        padding-left: 0;
         li.plan-type_group-item {
           display: grid;
           grid-template-rows: repeat(4, auto) 1fr;
@@ -80,19 +85,22 @@ section.plan-type {
             background-color: $color-white;
             margin: auto;
           }
-          h3.plan-type_group-item-title {
-            font-size: 2rem;
-            font-weight: 600;
-            letter-spacing: 1.2;
-            line-height: 1.2;
-            text-align: center;
-          }
-          span.plan-type_group-item-description {
-            font-weight: 600;
-            letter-spacing: 1.2;
-            color: $color-grey-dark;
-            text-align: center;
-            padding-bottom: 20px;
+          div.plan-type_group-item-body {
+            h3.plan-type_group-item-title {
+              font-size: 2rem;
+              font-weight: 600;
+              letter-spacing: 1.2;
+              line-height: 1.2;
+              text-align: center;
+            }
+            span.plan-type_group-item-description {
+              display: block;
+              font-weight: 600;
+              letter-spacing: 1.2;
+              color: $color-grey-dark;
+              text-align: center;
+              padding-bottom: 20px;
+            }
           }
           div.plan-type_group-item-price {
             position: relative;
@@ -103,6 +111,9 @@ section.plan-type {
             // box-shadow: 0 0 5px $color-grey-dark;
             padding: 40px 0;
             margin: 0 auto 20px;
+            &.period-price {
+              padding: 24px 0;
+            }
             span.plan-type_group-item-price-unit {
               position: absolute;
               left: 10%;
@@ -115,6 +126,13 @@ section.plan-type {
               font-size: 3.5rem;
               font-weight: 600;
               text-align: center;
+              span.plan-type_group-item-period {
+                display: block;
+                font-size: 1.75rem;
+              }
+            }
+            span.plan-type_group-item-discount-mobile {
+              display: none;
             }
           }
           span.plan-type_group-item-discount {
@@ -142,113 +160,102 @@ section.plan-type {
     }
   }
 }
-section.faq {
-  div.faq_wrapper {
-    max-width: 1000px;
-    width: 100%;
-    padding: 180px 0;
-    margin: auto;
-    div.faq-content {
-      padding-bottom: 80px;
-      h2.faq-title {
-        font-size: 3.5rem;
-        font-weight: 600;
-        color: $color-white;
-        padding-bottom: 20px;
-      }
-      span.faq-subtitle {
-        display: block;
-        font-size: 1.15rem;
-        font-weight: 600;
-        color: $color-grey-dark;
-      }
-    }
-    div.faq-accordion {
-      ul.faq-accordion_list {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        padding-bottom: 20px;
-        li.faq-accordion_card {
-          position: relative;
-          width: 100%;
-          background-color: $color-white;
-          border-radius: 1rem;
-          padding: 4rem 3rem;
-          margin: 20px;
-          h3.faq-accordion_card-title {
-            font-size: 2rem;
-            font-weight: 600;
-            padding-right: 100px;
-          }
-          ol.faq-accordion_card-contents {
-            display: none;
-            li.faq-accordion_card-content {
-              list-style: decimal;
-            }
-          }
-          button.faq-accordion_card-arrow {
-            position: absolute;
-            top: 85px;
-            right: 10%;
-            transform: translateY(-50%);
-            background-color: transparent;
-            border: 1px solid rgba($color-grey-dark, 0.5);
-            border-radius: 50%;
-            padding: 0.5rem;
-            cursor: pointer;
-          }
-          div.faq-accordion_card-delete {
-            position: absolute;
-            display: none;
-            right: 10px;
-            top: 10px;
-            animation: shakeTrashcan 0.1s linear infinite alternate;
-            cursor: pointer;
-            svg {
-              fill: $color-white;
-            }
-            &.active {
-              display: block;
-              transition: display 1s;
-            }
 
-            @keyframes shakeTrashcan {
-              0% {
-                transform: rotate(-15deg);
+@media screen and (max-width: 992px) {
+  section.plan-type {
+    div.plan-type_wrapper {
+      div.plan-type_group {
+        ul.plan-type_group-menu {
+          flex-direction: column;
+          align-items: center;
+          li.plan-type_group-item {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            grid-template-areas:
+              "tl tl tr tr tr tr"
+              "bl bl bl bl . br";
+            gap: 0;
+            max-width: none;
+            div.plan-type_group-item-logo {
+              grid-area: tl;
+            }
+            div.plan-type_group-item-body {
+              display: grid;
+              grid-template-rows: repeat(2, 1fr);
+              grid-area: tr;
+              h3.plan-type_group-item-title {
+                align-self: end;
+                font-size: 3rem;
               }
-              100% {
-                transform: rotate(15deg);
+              span.plan-type_group-item-description {
+                align-self: center;
+                font-size: 1.25rem;
               }
             }
-          }
-          &.active {
-            ol.faq-accordion_card-contents {
-              display: block;
-              color: $color-grey-dark;
-              text-align: justify;
-              letter-spacing: 1;
-              line-height: 1.3;
-              padding: 20px 55px 20px 20px;
-              li.faq-accordion_card-content {
-                padding-bottom: 10px;
+            div.plan-type_group-item-price {
+              grid-area: bl;
+              max-width: none;
+              box-shadow: 0 0 5px $color-grey-dark;
+              margin: 0;
+              span.plan-type_group-item-discount-mobile {
+                display: block;
+                position: absolute;
+                left: 0%;
+                top: 75%;
+                width: 100%;
+                font-size: 1rem;
+                font-weight: 600;
+                text-align: center;
+                line-height: 1.2;
+                color: $color-grey-dark;
               }
             }
-            button.faq-accordion_card-arrow {
-              background-color: $color-blue;
-              fill: $color-white;
-              transform: rotate(180deg) translateY(27px);
+            span.plan-type_group-item-discount {
+              display: none;
+            }
+            a.plan-type_group-item-submit {
+              grid-area: br;
             }
           }
         }
       }
     }
-    h3.faq-alert {
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: $color-grey-dark;
-      text-align: justify;
+  }
+}
+@media screen and (max-width: 768px) {
+  h3.plan-type_group-item-title {
+    font-size: 2.5rem !important;
+  }
+  span.plan-type_group-item-description {
+    font-size: 1rem !important;
+  }
+}
+@media screen and (max-width: 576px) {
+  section.plan-type {
+    svg {
+      width: 75px;
+      height: 75px;
+    }
+  }
+  h3.plan-type_group-item-title {
+    font-size: 2rem !important;
+  }
+}
+@media screen and (max-width: 467px) {
+  section.plan-type {
+    div.plan-type_wrapper {
+      div.plan-type_group {
+        ul.plan-type_group-menu {
+          li.plan-type_group-item {
+            display: flex;
+            flex-direction: column;
+            div.plan-type_group-item-price {
+              margin-bottom: 1rem;
+            }
+          }
+        }
+      }
     }
   }
 }

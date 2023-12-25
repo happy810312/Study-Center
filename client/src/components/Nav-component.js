@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, useCycle } from "framer-motion";
+import { motion } from "framer-motion";
 import AuthService from "../services/auth-service";
 import { LogoIcon, ArrowDownIcon } from "../components/icons";
+import { throttle } from "../utils";
 
 const NavComponent = ({ currentUser, setCurrentUser }) => {
   const [navBarClass, setNavBarClass] = useState("header-grey-light");
@@ -11,25 +12,6 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
   const navRef = useRef(null);
   const location = useLocation();
 
-  // framer motion 切換手機版漢堡
-  // const [isOpen, toggleOpen] = useCycle(false, true);
-  // const variants = {
-  //   open: {
-  //     y: 0,
-  //     opacity: 1,
-  //     transition: {
-  //       y: { stiffness: 1000, velocity: -100 },
-  //     },
-  //   },
-  //   closed: {
-  //     y: 50,
-  //     opacity: 0,
-  //     transition: {
-  //       y: { stiffness: 1000 },
-  //     },
-  //   },
-  // };
-
   const handleLogout = () => {
     AuthService.logout();
     window.alert("登出成功");
@@ -37,19 +19,18 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
   };
   const handleMenuOpen = () => {
     // menu open時不可以捲動畫面
-    if (isMenuOpen) {
-      document.body.style.overflow = "";
-    } else {
-      document.body.style.overflow = "hidden";
-    }
-    setIsMenuOpen(!isMenuOpen);
+    isMenuOpen
+      ? (document.body.style.overflow = "")
+      : (document.body.style.overflow = "hidden");
+    setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
   };
   const checkScrollDirection = () => {
     let lastScrollTop = 0;
     return () => {
       const currentScrollTop = window.scrollY;
 
-      // 使用callback避免同時觸發兩個條件
+      // 使用callback，更新state在檢查條件
+      // 避免同時觸發兩個條件
       setScrollingDown((prevScrollingDown) => {
         if (!prevScrollingDown && currentScrollTop > lastScrollTop) {
           return true;
@@ -75,18 +56,19 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // mobile版若發生網址變化，且menu還是放下的狀態 => 自動縮回
   useEffect(() => {
     if (isMenuOpen) {
-      setIsMenuOpen(!isMenuOpen);
+      setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
       document.body.style.overflow = "";
     }
-  }, [location.pathname]);
+  }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
   // 自動調整nav bar顏色
   useEffect(() => {
     // 監聽子節點位置的變化
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       // useRef.current. "DOM元素屬性"
       const navBarHeight = navRef.current.offsetHeight;
       const childNodes = document.querySelectorAll(
@@ -107,7 +89,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
           }
         }
       });
-    };
+    });
     handleScroll(); // 初始化
 
     // 初始化導覽列隱藏功能
@@ -117,7 +99,6 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
       top: 0,
       behavior: "smooth",
     });
-    console.log(scrollingDown);
 
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("scroll", check);
@@ -133,8 +114,8 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
       className={`header ${navBarClass}`}
       style={
         scrollingDown
-          ? { position: "relative", transition: "all 0.3s" }
-          : { position: "fixed", transition: "all 0.3s" }
+          ? { transform: `translateY(-${navRef.current.offsetHeight}px)` }
+          : { transform: "translateY(0)" }
       }
     >
       <div className="header-container">
@@ -163,7 +144,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
                     transform: "translateY(-50%)",
                   }}
                 >
-                  <ArrowDownIcon />
+                  <ArrowDownIcon width={"20px"} height={"20px"} />
                 </span>
               </Link>
               <ul>
@@ -175,13 +156,13 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
                 </li>
               </ul>
             </li>
-            {currentUser && currentUser.user.role == "reader" && (
+            {currentUser && currentUser.user.role === "reader" && (
               <li>
                 <Link to="/profile">Profile</Link>
               </li>
             )}
 
-            {currentUser && currentUser.user.role == "admin" && (
+            {currentUser && currentUser.user.role === "admin" && (
               <li>
                 <Link to="/admin">Admin</Link>
               </li>
@@ -243,13 +224,13 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
                       </li>
                     </ul>
                   </li>
-                  {currentUser && currentUser.user.role == "reader" && (
+                  {currentUser && currentUser.user.role === "reader" && (
                     <li className="header-mobile_navigation-list">
                       <Link to="/profile">Profile</Link>
                     </li>
                   )}
 
-                  {currentUser && currentUser.user.role == "admin" && (
+                  {currentUser && currentUser.user.role === "admin" && (
                     <li className="header-mobile_navigation-list">
                       <Link to="/admin">Admin</Link>
                     </li>

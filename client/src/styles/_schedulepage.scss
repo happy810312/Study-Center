@@ -1,0 +1,54 @@
+h1 {
+  font-size: 3.5rem;
+}
+.schedule-btns {
+  button {
+    min-width: 100px;
+  }
+}
+@media screen and (max-width: 576px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+  .schedule-btns {
+    button {
+      width: 100%;
+    }
+  }
+  table {
+    thead {
+      display: none;
+    }
+    tbody {
+      tr {
+        td {
+          min-height: 2.5rem;
+          width: 100%;
+          &:not(:last-of-type) {
+            &::before {
+              border-bottom: 1px solid $color-grey-light;
+            }
+            span {
+              border-bottom: 1px solid $color-grey-dark;
+            }
+          }
+          &::before {
+            content: attr(data-title);
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            max-width: calc(100% * 2 / 5);
+            width: 100%;
+            background-color: $color-dark;
+            font-weight: 600;
+            color: $color-grey-light;
+            padding: 8px;
+          }
+          span {
+            min-height: 2.5rem;
+          }
+        }
+      }
+    }
+  }
+}

@@ -3,9 +3,6 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/api/seats";
 
 class SeatService {
-  getSeatInfomation(seatNumber) {
-    return axios.get(API_URL + "/seatSelected/" + seatNumber);
-  }
   reserveSeat(seatNumber, startTime, endTime) {
     let token;
     if (localStorage.getItem("User")) {
@@ -43,6 +40,26 @@ class SeatService {
       }
     );
   }
+
+  // 測試period，service這邊不需要與hours的方法結合
+  getUnAvaliableSeatsByPeriod(startDate, endDate, period) {
+    let token;
+    if (localStorage.getItem("User")) {
+      token = JSON.parse(localStorage.getItem("User")).token;
+    } else {
+      token = "";
+    }
+    return axios.get(
+      `${API_URL}/search?startTime=${startDate}&endTime=${endDate}&period=${period}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
 }
 
-export default new SeatService();
+const seatServiceInstance = new SeatService();
+
+export default seatServiceInstance;

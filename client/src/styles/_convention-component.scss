@@ -1,0 +1,110 @@
+section.faq {
+  div.faq_wrapper {
+    max-width: 1000px;
+    width: 100%;
+    padding: 180px 0;
+    margin: auto;
+    div.faq-content {
+      padding-bottom: 80px;
+      h2.faq-title {
+        font-size: 3.5rem;
+        font-weight: 600;
+        color: $color-white;
+        padding-bottom: 20px;
+      }
+      span.faq-subtitle {
+        display: block;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: $color-grey-dark;
+      }
+    }
+    div.faq-accordion {
+      ul.faq-accordion_list {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-bottom: 20px;
+        li.faq-accordion_card {
+          position: relative;
+          width: 100%;
+          background-color: $color-white;
+          border-radius: 1rem;
+          padding: 4rem 3rem;
+          margin: 20px;
+          h3.faq-accordion_card-title {
+            font-size: 2rem;
+            font-weight: 600;
+            padding-right: 100px;
+          }
+          ol.faq-accordion_card-contents {
+            display: none;
+            li.faq-accordion_card-content {
+              list-style: decimal;
+            }
+          }
+          button.faq-accordion_card-arrow {
+            position: absolute;
+            top: 85px;
+            right: 10%;
+            transform: translateY(-50%);
+            background-color: transparent;
+            border: 1px solid rgba($color-grey-dark, 0.5);
+            border-radius: 50%;
+            padding: 0.5rem;
+            cursor: pointer;
+          }
+          div.faq-accordion_card-delete {
+            position: absolute;
+            display: none;
+            right: 10px;
+            top: 10px;
+            animation: shakeTrashcan 0.1s linear infinite alternate;
+            cursor: pointer;
+            svg {
+              fill: $color-white;
+            }
+            &.active {
+              display: block;
+              transition: display 1s;
+            }
+
+            @keyframes shakeTrashcan {
+              0% {
+                transform: rotate(-15deg);
+              }
+              100% {
+                transform: rotate(15deg);
+              }
+            }
+          }
+          &.active {
+            ol.faq-accordion_card-contents {
+              display: block;
+              color: $color-grey-dark;
+              text-align: justify;
+              letter-spacing: 1;
+              line-height: 1.3;
+              padding: 20px 55px 20px 20px;
+              li.faq-accordion_card-content {
+                padding-bottom: 10px;
+              }
+            }
+            button.faq-accordion_card-arrow {
+              background-color: $color-blue;
+              fill: $color-white;
+              transform: rotate(180deg) translateY(27px);
+            }
+          }
+        }
+      }
+    }
+    h3.faq-alert {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: $color-grey-dark;
+      text-align: justify;
+    }
+  }
+}

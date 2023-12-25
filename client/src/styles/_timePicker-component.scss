@@ -6,6 +6,11 @@ div.time-picker {
   margin: 1rem 0;
   &.input-focus {
     border: 2px solid $color-blue;
+    div.time-picker_time {
+      label {
+        color: $color-blue;
+      }
+    }
   }
   &:hover:not(.input-focus) {
     border: 1px solid $color-dark;
@@ -52,47 +57,6 @@ div.time-picker {
       }
       svg {
         fill: rgb($color-dark, 0.6);
-      }
-    }
-  }
-}
-div.time-dropdown {
-  position: absolute;
-  z-index: 1;
-  top: 105%;
-  right: 0;
-  background-color: $color-white;
-  border-radius: 4px;
-  box-shadow: 0 0 5px rgb($color-dark, 0.54);
-  div.time-dropdown_wrapper {
-    display: flex;
-    flex-direction: column;
-    div.time-dropdown_digital-clock {
-      display: flex;
-      height: 200px;
-      ul.time-dropdown_digital-hours,
-      ul.time-dropdown_digital-minutes {
-        width: 60px;
-        height: 200px;
-        text-align: center;
-        border: 1px solid rgb($color-dark, 0.1);
-        padding: 0;
-        margin: auto;
-        overflow: hidden;
-        cursor: pointer;
-        &:hover {
-          overflow: auto;
-        }
-        li.time-dropdown_digital-hour,
-        li.time-dropdown_digital-minute {
-          &:hover {
-            background-color: $color-grey-light;
-          }
-          &.selected {
-            color: $color-white;
-            background-color: $color-blue;
-          }
-        }
       }
     }
   }

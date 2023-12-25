@@ -4,4 +4,5 @@ module.exports = {
   user: require("./user-route"),
   recharge: require("./recharge-route"),
   schedule: require("./schedule-route"),
+  news: require("./news-route"),
 };

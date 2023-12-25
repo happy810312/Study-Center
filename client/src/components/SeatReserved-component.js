@@ -1,3 +1,4 @@
+import { ArrowLeftIcon } from "@mui/x-date-pickers";
 import { format } from "date-fns";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,85 +11,40 @@ const SeatReservedComponent = ({
   foundUnAvaliableSeats,
 }) => {
   // 定義座位編號
-  const A_block_seats = [
-    "A01",
-    "A02",
-    "A03",
-    "A04",
-    "A05",
-    "A06",
-    "A07",
-    "A08",
-    "A09",
-  ];
-  const B_block_seats = [
-    "B01",
-    "B02",
-    "B03",
-    "B04",
-    "B05",
-    "B06",
-    "B07",
-    "B08",
-    "B09",
-  ];
-  const C_block_seats = [
-    "C01",
-    "C02",
-    "C03",
-    "C04",
-    "C06",
-    "C07",
-    "C08",
-    "C09",
-    "C10",
-    "C11",
-    "C12",
-  ];
-  const D_block_seats = [
-    "D01",
-    "D02",
-    "D03",
-    "D04",
-    "D05",
-    "D06",
-    "D07",
-    "D08",
-    "D09",
-    "D10",
-    "D11",
-    "D12",
-  ];
-  const E_block_seats = [
-    "E02",
-    "E03",
-    "E04",
-    "E05",
-    "E06",
-    "E07",
-    "E08",
-    "E09",
-    "E10",
-    "E11",
-    "E12",
-    "E13",
-  ];
-  const F_block_seats = [
-    "F01",
-    "F02",
-    "F03",
-    "F05",
-    "F06",
-    "F07",
-    "F08",
-    "F09",
-    "F10",
-    "F11",
-    "F12",
-    "F13",
-    "F15",
-    "F16",
-  ];
+  const seats = {
+    A: Array.from({ length: 9 }, (_, index) => {
+      return `A0${index + 1}`; // A01 - A09
+    }),
+    B: Array.from({ length: 9 }, (_, index) => {
+      return `B0${index + 1}`; // B01 - B09
+    }),
+    C: Array.from({ length: 12 }, (_, index) => {
+      const seatNumber = index + 1 < 10 ? `0${index + 1}` : `${index + 1}`;
+      if (index + 1 === 5) {
+        return null;
+      }
+      return `C${seatNumber}`;
+    }).filter((seat) => seat !== null),
+    D: Array.from({ length: 12 }, (_, index) => {
+      const seatNumber = index + 1 < 10 ? `0${index + 1}` : `${index + 1}`;
+      return `D${seatNumber}`;
+    }),
+    E: Array.from({ length: 13 }, (_, index) => {
+      const seatNumber = index + 1 < 10 ? `0${index + 1}` : `${index + 1}`;
+      if (index + 1 === 1) {
+        return null;
+      }
+      return `E${seatNumber}`;
+    }).filter((seat) => seat !== null),
+    F: Array.from({ length: 16 }, (_, index) => {
+      const seatNumber = index + 1 < 10 ? `0${index + 1}` : `${index + 1}`;
+      if (index + 1 === 4 || index + 1 === 14) {
+        return null;
+      }
+      return `F${seatNumber}`;
+    }).filter((seat) => seat !== null),
+  };
+
   const [selectedSeat, setSelectedSeat] = useState(null);
   const [rainSound2F, setRainSound2F] = useState(true);
 
@@ -148,10 +104,9 @@ const SeatReservedComponent = ({
                   "yyyy/MM/dd HH:mm"
                 )} - ${format(endTime, "yyyy/MM/dd HH:mm")}`}
               </span>
-              {message && <div className="alert alert-danger">{message}</div>}
               <div className="seat-reserved_btn-group">
                 <button onClick={handleBackToTimePicker} type="button">
-                  上一頁
+                  <ArrowLeftIcon />
                 </button>
                 <button onClick={handleRainSound2F} type="button">
                   RainSound-2F
@@ -160,81 +115,38 @@ const SeatReservedComponent = ({
                   RainSound-3F
                 </button>
               </div>
-
+              {message && <div className="alert alert-danger">{message}</div>}
               {rainSound2F && (
                 <div className="seat-reserved_inner-grid rain-sound-2F">
                   <div className="block block-information-counter">
                     <span className="block-name">Front Desk</span>
                   </div>
                   <div className="block block-rest"></div>
-                  <div className="block block-A">
-                    <span className="block-name">A Room</span>
-                    {A_block_seats.map((seatNumber) => {
-                      return (
-                        <div className={`seat-no ${seatNumber}`}>
-                          {seatNumber}
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="block block-B">
-                    <span className="block-name">B Room</span>
-                    {B_block_seats.map((seatNumber) => {
-                      return (
-                        <div className={`seat-no ${seatNumber}`}>
-                          {seatNumber}
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="block block-C">
-                    <span className="block-name">C Room</span>
-                    {C_block_seats.map((seatNumber) => {
-                      return (
-                        <div className={`seat-no ${seatNumber}`}>
-                          {seatNumber}
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="block block-D">
-                    <span className="block-name">D Room</span>
-                    {D_block_seats.map((seatNumber) => {
-                      return (
-                        <div className={`seat-no ${seatNumber}`}>
-                          {seatNumber}
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="block block-E">
-                    <span className="block-name">E Room</span>
-                    {E_block_seats.map((seatNumber) => {
-                      return (
-                        <div className={`seat-no ${seatNumber}`}>
-                          {seatNumber}
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="block block-F">
-                    <span className="block-name">F Room</span>
-                    {F_block_seats.map((seatNumber) => {
-                      const isUnAvaliable =
-                        foundUnAvaliableSeats[seatNumber] ===
-                        "unAvaliable seat";
-                      return (
-                        <div
-                          onClick={handleSelectedSeat}
-                          className={`seat-no ${seatNumber} ${
-                            selectedSeat == seatNumber ? "selected" : ""
-                          } ${isUnAvaliable ? "unavaliable" : ""}`}
-                        >
-                          {seatNumber}
-                        </div>
-                      );
-                    })}
-                  </div>
+                  {Object.keys(seats).map((blockName) => {
+                    if (!["A", "B", "C", "D", "E", "F"].includes(blockName)) {
+                      return null;
+                    }
+                    return (
+                      <div className={`block block-${blockName}`}>
+                        <span className="block-name">{`${blockName} Room`}</span>
+                        {seats[blockName].map((seatNumber) => {
+                          const isUnAvaliable =
+                            foundUnAvaliableSeats[seatNumber] ===
+                            "unAvaliable seat";
+                          return (
+                            <div
+                              onClick={handleSelectedSeat}
+                              className={`seat-no ${seatNumber} ${
+                                selectedSeat === seatNumber ? "selected" : ""
+                              } ${isUnAvaliable ? "unavaliable" : ""}`}
+                            >
+                              {seatNumber}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
               {!rainSound2F && (
@@ -261,13 +173,22 @@ const SeatReservedComponent = ({
                   </div>
                   <div className="block block-V-top">
                     <span className="block-name">Study Room</span>
+                    <div className="seat-no V01">V01</div>
+                    <div className="seat-no V02">V02</div>
+                    <div className="seat-no V03">V03</div>
+                    <div className="seat-no V04">V04</div>
+                    <div className="seat-no V05">V05</div>
+                    <div className="seat-no V06">V06</div>
                   </div>
-                  <div className="block block-V-bottom"></div>
                   <div className="block block-V-right"></div>
                   <div className="block block-V-left">
                     <div className="seat-no V07">V07</div>
                     <div className="seat-no V08">V08</div>
                     <div className="seat-no V09">V09</div>
+                    <div className="seat-no V09">V10</div>
+                    <div className="seat-no V09">V11</div>
+                    <div className="seat-no V09">V12</div>
+                    <div className="seat-no V09">V13</div>
                   </div>
                 </div>
               )}

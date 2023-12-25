@@ -8,34 +8,22 @@ const seatSchema = mongoose.Schema({
   },
   startTime: {
     type: Date,
-    require: function () {
-      return !startDate && !endDate && !period;
-    },
+    require: true,
   },
   endTime: {
     type: Date,
-    require: function () {
-      return !startDate && !endDate && !period;
-    },
+    require: true,
   },
-  startDate: {
-    type: Date,
-    require: function () {
-      return !startTime && !endTime;
-    },
-  },
-  endDate: {
-    type: Date,
-    require: function () {
-      return !startTime && !endTime;
-    },
+  reservationType: {
+    type: String,
+    enum: ["hourly", "period"],
   },
   period: {
     type: String,
     require: function () {
-      return !startTime && !endTime;
+      return reservationType === "period";
     },
-    enum: ["morning", "afternoon", "evening", "hours"],
+    enum: ["morning", "afternoon", "evening", "hours"], // hours到時候刪除
   },
   user: {
     // 用戶假設是mongodb的object
@@ -62,18 +50,20 @@ const seatSchema = mongoose.Schema({
   },
 });
 
-// // 各時段的價格
+// 各時段的價格
 // seatSchema.virtual("price").get(function () {
-//   if (this.usageTime == "morning") {
+//   if (reservationType !== "period") return;
+
+//   if (this.period == "morning") {
 //     return 75;
-//   } else if (this.usageTime == "afternoon") {
+//   } else if (this.period == "afternoon") {
 //     return 105;
-//   } else if (this.usageTime == "evening") {
+//   } else if (this.period == "evening") {
 //     return 125;
 //   }
 // });
 
-// 計算價格 => 感覺要寫在前端
+// 計算價格
 seatSchema.methods.calculatePrice = function () {
   const pricePerHour = 20;
   const timeSlot = this.endTime.getTime() - this.startTime.getTime(); // mile seconds

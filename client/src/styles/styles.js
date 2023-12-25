@@ -8,17 +8,6 @@ export const Container = styled.div`
 `;
 
 export const Wrapper = styled.div`
-  padding-top: ${(props) =>
-    props.paddingTop === true
-      ? "180px"
-      : props.paddingTop
-      ? `${props.paddingTop}px`
-      : "initial"};
-  color: ${(props) => (props.skyblue ? "skyblue" : "red")};
+  padding: ${(props) =>
+    props.paddingY === true ? `${props.paddingY}px 0px` : "180px 0px"};
 `;
-
-{
-  /* <Wrapper skyblue paddingTop={10}>
-123
-</Wrapper> */
-}

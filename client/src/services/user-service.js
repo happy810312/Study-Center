@@ -11,13 +11,13 @@ class UserService {
     });
   }
   getProfile(_id) {
-    return axios.get(API_URL + "/profile/" + _id);
+    return axios.get(API_URL + "/" + _id);
   }
   getFilesName() {
     return axios.get(API_URL + "/files/picturesName");
   }
-  postFiles(file) {
-    return axios.post(API_URL + "/files/picturesName", { file });
+  patchThumbnail(_id, file) {
+    return axios.patch(API_URL + "/picture" + _id, { file });
   }
   patchPhoneNumner(_id, newPhone) {
     return axios.patch(API_URL + "/phoneNumber/" + _id, { newPhone });
@@ -27,4 +27,6 @@ class UserService {
   }
 }
 
-export default new UserService();
+const userServiceInstance = new UserService();
+
+export default userServiceInstance;

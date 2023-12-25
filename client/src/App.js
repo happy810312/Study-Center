@@ -13,10 +13,11 @@ import LoginPage from "./pages/Login-page";
 import Booking from "./pages/Booking-page";
 import MonthyBooking from "./pages/MonthyBooking-page";
 import RegisterPage from "./pages/Register-page";
-import NewsManagePage from "./pages/NewsManage-page";
+// import NewsManagePage from "./pages/NewsManage-page";
 import ProfilePage from "./pages/Profile-page";
 import AboutPage from "./pages/About-page";
 import AuthService from "./services/auth-service";
+import EditPage from "./pages/Edit-page";
 import "./styles/style.css";
 
 const App = () => {
@@ -76,8 +77,8 @@ const App = () => {
           <Route path="/monthy-booking" element={<MonthyBooking />}></Route>
           <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/about" element={<AboutPage />}></Route>
+          <Route path="/news/post" element={<EditPage />}></Route>
         </Route>
-        <Route path="news-manage" element={<NewsManagePage />}></Route>
         <Route path="*" element={<Page404 />}></Route>
       </Routes>
     </BrowserRouter>

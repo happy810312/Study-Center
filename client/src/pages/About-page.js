@@ -19,6 +19,7 @@ const AboutPage = () => {
               allowfullscreen=""
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
+              title="address"
             ></iframe>
           </div>
           <div className="about-us_information">

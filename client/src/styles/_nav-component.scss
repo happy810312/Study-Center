@@ -4,6 +4,7 @@ header.header-grey-light {
   z-index: 10;
   left: 0;
   right: 0;
+  transition: all 0.5s;
 
   div.header-container {
     display: flex;

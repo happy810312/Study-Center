@@ -49,6 +49,13 @@ header.header-dark,
   margin: auto;
 }
 
+div.DraftEditor-root {
+  height: 100%;
+  div.DraftEditor-editorContainer {
+    height: 300px;
+  }
+}
+
 @import "./nav-component";
 @import "./seatCategories-component";
 @import "./homepage";
@@ -62,9 +69,10 @@ header.header-dark,
 @import "./page404";
 @import "./loginpage";
 @import "./seatReserved-component";
-@import "./schedule";
 @import "./lilCalender-component";
 @import "./timePicker-component";
 @import "./profliepage";
 @import "./customBootstrap";
 @import "./about";
+@import "./convention-component";
+@import "./schedulepage";

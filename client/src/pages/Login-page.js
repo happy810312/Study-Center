@@ -23,7 +23,7 @@ const LoginPage = ({ currentUser, setCurrentUser }) => {
       window.alert("登入成功");
       navigate("/");
     } catch (e) {
-      setMessage(e.response.data);
+      setMessage(e.response.data.message);
     }
   };
   const handleGoogleBtn = () => {
@@ -43,13 +43,14 @@ const LoginPage = ({ currentUser, setCurrentUser }) => {
       <div className="container">
         <div
           className="login_wrapper text-white"
-          style={{ padding: "240px 0 20px", maxWidth: "460px", margin: "auto" }}
+          style={{ padding: "180px 0 20px", maxWidth: "460px", margin: "auto" }}
         >
           <div className="d-flex flex-column align-items-center justify-content-center pb-5">
             <UserIcon width={"125px"} height={"125px"} fill={"#F5F2F2"} />
             <h2 className="display-4 pt-2">Login</h2>
           </div>
           {/* {currentUser && <div>{currentUser}</div>} */}
+          {message && <div className="alert alert-danger">{message}</div>}
           <div className="mb-3">
             <label htmlFor="loginEmail" className="form-label">
               Email Address

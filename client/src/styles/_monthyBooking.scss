@@ -29,21 +29,40 @@ section.monthy-booking {
       div.period-picker {
         position: relative;
         display: flex;
+        width: 100%;
         border: 1px solid rgb($color-dark, 0.2);
         border-radius: 4px;
-        margin: 1rem 0;
+        margin-bottom: 1rem;
         &.input-focus {
           border: 2px solid $color-blue;
+          div.period-picker_period {
+            label {
+              position: absolute;
+              left: 8px;
+              top: -8px;
+              transform: translateY(0);
+              font-size: 0.75rem;
+              font-weight: 400;
+              color: $color-blue;
+              background-color: $color-grey-light;
+              padding: 0 4px;
+              transition: all 0.3s;
+            }
+          }
         }
         &:hover:not(.input-focus) {
           border: 1px solid $color-dark;
         }
         div.period-picker_period {
+          position: relative;
+          border-right: none;
           label {
+            pointer-events: none; // 阻止滑鼠動作 因為label壓在input上面，會讓input點不到
             position: absolute;
             left: 8px;
-            top: -8px;
-            font-size: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
             font-weight: 400;
             color: rgb($color-dark, 0.6);
             background-color: $color-grey-light;
@@ -55,12 +74,12 @@ section.monthy-booking {
             border-radius: 4px;
             padding: 16.5px 0 16.5px 14px;
             outline: none;
+            caret-color: transparent; // 光標透明
           }
         }
         div.period-picker_btn {
           position: relative;
-          //   width: 100%;
-          width: 50px;
+          width: 100%;
           border: none;
           button {
             position: absolute;

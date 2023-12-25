@@ -9,6 +9,7 @@ const userRoute = require("./routes").user;
 const seatsRoute = require("./routes").seats;
 const rechargeRoute = require("./routes").recharge;
 const scheduleRoute = require("./routes").schedule;
+const newsRoute = require("./routes").news;
 
 const passport = require("passport");
 const {
@@ -29,12 +30,14 @@ mongoose
     console.log(e);
   });
 
-app.use(express.json());
+// 限制照片大小10MB
+app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 // cors要在路由之前設定，才可以確保在處理跨來源之前使用cors
 app.use(cors());
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
+app.use("/api/news", newsRoute);
 app.use("/api/recharge", rechargeRoute);
 // header若沒有jwt，會return unauthorization
 app.use(
@@ -48,6 +51,6 @@ app.use(
   scheduleRoute
 );
 
-app.listen(8080, () => {
+app.listen(process.env.PORT || 8080, () => {
   console.log("listening port 8080...");
 });

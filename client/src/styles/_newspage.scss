@@ -56,7 +56,7 @@ section.news {
           padding: 4rem 3rem;
           margin: 20px;
           &.active {
-            span.news-accordion_card-content {
+            p.news-accordion_card-content {
               display: block;
               color: $color-grey-dark;
               text-align: justify;
@@ -87,7 +87,7 @@ section.news {
               padding: 0.5rem;
             }
           }
-          span.news-accordion_card-content {
+          p.news-accordion_card-content {
             display: none;
           }
           div.news-accordion_card-delete {
@@ -197,7 +197,7 @@ section.news {
                 font-size: 1.15rem;
               }
             }
-            span.news-accordion_card-content {
+            p.news-accordion_card-content {
               font-size: 0.85rem;
             }
           }

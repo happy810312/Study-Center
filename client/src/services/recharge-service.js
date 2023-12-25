@@ -24,4 +24,6 @@ class RechargeService {
   }
 }
 
-export default new RechargeService();
+const rechargeServiceInstance = new RechargeService();
+
+export default rechargeServiceInstance;

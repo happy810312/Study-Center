@@ -24,9 +24,8 @@ const RegisterPage = () => {
         window.alert("註冊成功");
         navigate("/login");
       })
-      .catch((e) => {
-        setMessage(e.response.data);
-        console.log(message);
+      .catch((error) => {
+        setMessage(error.response.data.message);
       });
   };
   return (

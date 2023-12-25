@@ -90,7 +90,11 @@ const FooterComponent = () => {
               you.
             </span>
             <div className="footer-subscribe_input">
-              <input type="text" placeholder="Enter Your E-Mail" />
+              <input
+                type="text"
+                id="subscribe"
+                placeholder="Enter Your E-Mail"
+              />
               <button type="button">
                 <ArrowRightIcon />
               </button>

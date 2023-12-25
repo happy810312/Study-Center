@@ -1,37 +1,34 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import ScheduleService from "../services/schedule-service";
-import { addMonths, format, set } from "date-fns";
+import { format, set, subMonths, startOfDay, endOfDay } from "date-fns";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { throttle } from "../utils";
+import { TrashcanIcon } from "../components/icons";
 
 const SchedulePage = () => {
   // api查詢database資料的變數
   const [dataList, setDataList] = useState([]); // array裡面是object
-  const [dataIndex, setDataIndex] = useState([]); // array裡面是index編號
   const [totalCount, setTotalCount] = useState({
     totalItems: 0,
-    totalPages: 0,
+    totalPages: 1,
     totalDonate: 0,
   });
   const [isDateRange, setIsDateRange] = useState(false); // 是否查詢指定區間
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(addMonths(new Date(), 1));
-  const [cancel, setCancel] = useState(false);
+  const [startDate, setStartDate] = useState(subMonths(new Date(), 6));
+  const [endDate, setEndDate] = useState(new Date());
+  const [[tempStartDate, tempEndDate], tempSetter] = useState([
+    subMonths(new Date(), 6),
+    new Date(),
+  ]);
+  const [edit, setEdit] = useState(false);
   const [message, setMessage] = useState(null);
 
   // 資料顯示變數
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(10);
-  // const location = useLocation();
-  // const [page, setPage] = useState(
-  //   new URLSearchParams(location.search).get("page")
-  // );
-  // const [items, setItems] = useState(
-  //   new URLSearchParams(location.search).get("items")
-  // );
 
   // 翻頁的頁碼變數
   const paginateOptions = Array.from(
@@ -40,31 +37,11 @@ const SchedulePage = () => {
   );
 
   // 查詢指定時間的btn
-  const handleSearchBtn = (startDate, endDate) => {
-    // set startDate => 00:00:00 , endDate => 23:59:59
-    const setStartDate = set(new Date(startDate), {
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-    });
-    const setEndDate = set(new Date(endDate), {
-      hours: 23,
-      minutes: 59,
-      seconds: 59,
-    });
-
-    ScheduleService.getDateRangeSchedule(
-      setStartDate.toISOString(),
-      setEndDate.toISOString()
-    )
-      .then((foundSchedule) => {
-        setDataList(foundSchedule.data);
-        setIsDateRange(true);
-        // console.log(foundSchedule.data);
-      })
-      .catch((error) => {
-        setMessage(error.response.data.msg);
-      });
+  const handleSearchBtn = () => {
+    setIsDateRange(true);
+    setStartDate(tempStartDate);
+    setEndDate(tempEndDate);
+    setPage(1);
   };
   // 換頁按鈕們
   const handlePaginateBtn = (e) => {
@@ -74,188 +51,171 @@ const SchedulePage = () => {
   const handlePrevBtn = () => {
     if (Number(page) === paginateOptions[0]) {
       return;
-    } else {
-      setPage(page - 1);
     }
+    setPage(page - 1);
   };
   const handleNextBtn = () => {
     if (Number(page) === paginateOptions[paginateOptions.length - 1]) {
       return;
-    } else {
-      setPage(page + 1);
     }
+    setPage(page + 1);
   };
   // 刪除的按鈕們
-  const handleCancelBtn = (e) => {
-    setCancel(!cancel);
+  const handleEditBtn = () => {
+    setEdit((prevEditStatus) => {
+      setSpanAmount((prev) => (!prevEditStatus ? ++prev : --prev));
+      return !prevEditStatus;
+    });
   };
-  const handleDeleteBtn = (e) => {
+  const handleDeleteBtn = async (e) => {
+    const rowElement = e.currentTarget.closest(".d-sm-table-row");
     // 抓取座位資訊，用在確認視窗中顯示
-    const orderId =
-      e.currentTarget.parentNode.parentNode.childNodes[0].getAttribute(
-        "data-order-id"
-      );
-    const startTime =
-      e.currentTarget.parentNode.parentNode.childNodes[1].textContent;
-    const endTime =
-      e.currentTarget.parentNode.parentNode.childNodes[2].textContent;
-    const seatNumber =
-      e.currentTarget.parentNode.parentNode.childNodes[4].textContent;
+    const orderId = rowElement.childNodes[0].getAttribute("data-order-id");
+    const startTime = rowElement.childNodes[1].textContent;
+    const endTime = rowElement.childNodes[2].textContent;
+    const seatNumber = rowElement.childNodes[4].textContent;
 
     // 確認視窗
     const confirmResult = window.confirm(
       `Start Time : ${startTime}\nEnd Time   : ${endTime}\nSeat Number : ${seatNumber}\nAre you sure to delete ?`
     );
 
-    if (confirmResult) {
-      ScheduleService.deleteReservation(orderId)
-        .then((response) => {
-          if (response.status === 200) {
-            // 如果只setMessage會造成只更新message的部分 =>
-            // react只刷新有更新的地方 => 所以datalist也需要更新
-            const updatedDataList = dataList.filter(
-              (item) => item._id !== orderId
-            );
-            setDataList(updatedDataList);
-          }
-          setMessage(`${response.data.message}`);
-        })
-        .catch((error) => {
-          // console.log(error);
-          setMessage(error.response.data.message);
-        });
-    }
-  };
+    if (!confirmResult) return;
 
-  // 排序order日期，降序排序b-a
-  // 故障，待修
-  const sortObjByDate = (orders) => {
-    return orders.sort((order1, order2) => {
-      const date1 = new Date(order1.startTime);
-      const date2 = new Date(order2.startTime);
-      if (date1 < date2) return 1; // 降序排序
-      if (date1 > date2) return -1;
-      return 0;
-    });
+    ScheduleService.deleteReservation(orderId)
+      .then((response) => {
+        if (response.status === 200) {
+          // 如果只setMessage會造成只更新message的部分 =>
+          // react只刷新有更新的地方 => 所以datalist也需要更新
+          const updatedDataList = dataList.filter(
+            (item) => item._id !== orderId
+          );
+          setDataList(updatedDataList);
+        }
+        setMessage(`${response.data.message}`);
+      })
+      .catch((error) => {
+        setMessage(error.response.data.message);
+      });
   };
+  // RWD調整tfoot的colspan數量
+  const [spanAmount, setSpanAmount] = useState(6);
+  useEffect(() => {
+    const handleResize = throttle(() => {
+      const xs = window.innerWidth < 576;
+      const sm = window.innerWidth >= 576 && window.innerWidth < 768;
+      const md = window.innerWidth >= 768;
+      if (xs && spanAmount !== 1) {
+        setSpanAmount(1);
+      } else if (sm && spanAmount !== 5) {
+        setSpanAmount(5);
+      } else if (md && spanAmount !== 6) {
+        setSpanAmount(6);
+      }
+    }, 200);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [spanAmount]);
 
   // 進入頁面發送request，依據page跟items數量取得req.user座位資料
   useEffect(() => {
-    ScheduleService.getPageSchedule(page, items)
-      .then((scheduleMenu) => {
-        setDataIndex(scheduleMenu.data.dataLength);
-        setDataList(scheduleMenu.data.dataToDisplay);
-        setMessage(null);
-      })
-      .catch((e) => {
-        setMessage(e);
-      });
-  }, [page]); // 換頁時重新取得單頁資料
+    const fetchData = async () => {
+      try {
+        const start = startOfDay(startDate);
+        const end = endOfDay(endDate);
+        const response = await ScheduleService.getSchedules(
+          start,
+          end,
+          page,
+          items
+        );
 
-  // 進入頁面發送request，取得總共頁面數量及items數量
-  useEffect(() => {
-    // 第一次進到schedule頁面，還沒選擇指定時間
-    if (!isDateRange) {
-      ScheduleService.getAllScheduleCount()
-        .then((response) => {
-          setTotalCount({
-            totalItems: response.data.totalItems,
-            totalPages: response.data.totalPages,
-            totalDonate: response.data.totalDonate,
-          });
-          setMessage(null);
-        })
-        .catch((e) => {
-          setMessage(e);
+        const documents = response.data.totalDocuments;
+        const pages = Math.ceil(documents / items);
+        const donates = response.data.totalDonate[0].total;
+
+        setTotalCount({
+          totalItems: documents,
+          totalPages: pages,
+          totalDonate: donates,
         });
-    }
-    // 選擇指定時間後執行
-    else {
-      const startDateISO = startDate.toISOString();
-      const endDateISO = endDate.toISOString();
-      ScheduleService.getDateRangeCount(startDateISO, endDateISO, items)
-        .then((response) => {
-          console.log(response);
-          setTotalCount({
-            totalItems: response.data.totalItems,
-            totalPages: response.data.totalPages,
-            totalDonate: response.data.totalDonate,
-          });
-          setMessage(null);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }, [dataList]);
+
+        setDataList(response.data.foundSchedules);
+        setMessage(null);
+      } catch (error) {
+        setMessage(error);
+      }
+    };
+    fetchData();
+  }, [page, items, startDate, endDate, isDateRange]); // 換頁時重新取得單頁資料
 
   return (
     <>
-      <div className="container container-fluid">
+      <div className="schedule container-md">
         <div className="wrapper" style={{ padding: "140px 0" }}>
-          <h1 className="fw-semibold mb-5" style={{ fontSize: "3.5rem" }}>
-            My Schedule.
-          </h1>
+          <h1 className="fw-semibold mb-5">My Schedule.</h1>
           <form>
             <fieldset>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <div className="row mb-3 ">
-                  <div className="col-12 col-md-3 mb-3 mb-md-0">
-                    <DatePicker
-                      className="date-picker"
-                      label="Start Date"
-                      showDaysOutsideCurrentMonth
-                      value={startDate}
-                      onChange={(date) => {
-                        setStartDate(date);
-                      }}
-                      format="yyyy/MM/dd"
-                      formatDensity
-                    />
-                  </div>
-                  <div className="col-12 col-md-3 mb-3 mb-md-0">
-                    <DatePicker
-                      className="date-picker"
-                      label="End Date"
-                      showDaysOutsideCurrentMonth
-                      value={endDate}
-                      onChange={(date) => {
-                        setEndDate(date);
-                      }}
-                      format="yyyy/MM/dd"
-                      formatDensity
-                    />
-                  </div>
-                  <div className="col-12 col-md-2 offset-0 offset-md-4 d-flex justify-content-start justify-content-md-end align-items-center">
-                    {!cancel && (
+                  {!edit && (
+                    <div className="col-12 col-md-3 mb-3 mb-md-0">
+                      <DatePicker
+                        className="date-picker"
+                        label="Start Date"
+                        showDaysOutsideCurrentMonth
+                        value={tempStartDate}
+                        onChange={(date) => {
+                          tempSetter([date, tempEndDate]);
+                        }}
+                        format="yyyy/MM/dd"
+                        formatDensity
+                      />
+                    </div>
+                  )}
+                  {!edit && (
+                    <div className="col-12 col-md-3 mb-3 mb-md-0">
+                      <DatePicker
+                        className="date-picker"
+                        label="End Date"
+                        showDaysOutsideCurrentMonth
+                        value={tempEndDate}
+                        onChange={(date) => {
+                          tempSetter([tempStartDate, date]);
+                        }}
+                        format="yyyy/MM/dd"
+                        formatDensity
+                      />
+                    </div>
+                  )}
+
+                  <div
+                    className={`schedule-btns col-12 col-md-6 ${
+                      edit ? "offset-md-6" : ""
+                    } d-flex flex-column flex-sm-row justify-content-start justify-content-md-between align-items-center`}
+                  >
+                    {!edit && (
                       <button
                         type="button"
                         onClick={() => {
                           handleSearchBtn(startDate, endDate);
                         }}
-                        className="btn btn-primary"
+                        className="btn btn-lg btn-primary mb-3 mb-sm-0"
                       >
                         Search
                       </button>
                     )}
-                    {!cancel && (
-                      <button
-                        type="button"
-                        onClick={handleCancelBtn}
-                        className="btn btn-primary ms-3"
-                      >
-                        Cancel
-                      </button>
-                    )}
-                    {cancel && (
-                      <button
-                        type="button"
-                        onClick={handleCancelBtn}
-                        className="btn btn-primary ms-3"
-                      >
-                        Done
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      onClick={handleEditBtn}
+                      className={`btn btn-lg btn-primary ${
+                        edit ? "ms-auto" : ""
+                      } ${!edit ? "ms-sm-3" : ""}`}
+                    >
+                      {`${edit ? "Done" : "Edit"}`}
+                    </button>
                   </div>
                 </div>
               </LocalizationProvider>
@@ -265,10 +225,10 @@ const SchedulePage = () => {
             <div className="alert alert-danger">{String(message)}</div>
           )}
           <div className="table-responsive">
-            <table className="table table-striped table-hover table-bordered align-middle caption-top">
+            <table className="table table-striped table-hover table-bordered border-secondary align-middle caption-top">
               <caption>List of Reservations</caption>
               <thead className="table-dark text-center">
-                <tr>
+                <tr className="align-middle">
                   <th scope="col" className="col-1">
                     #
                   </th>
@@ -277,70 +237,100 @@ const SchedulePage = () => {
                   {/* Period === "時段" or "當天" */}
                   <th scope="col">Period</th>
                   <th scope="col">Seat Number</th>
-                  <th scope="col">Reserve Date</th>
+                  <th
+                    scope="col"
+                    className="d-table-cell d-sm-none d-md-table-cell"
+                  >
+                    Reserve Date
+                  </th>
                   <th scope="col">Price</th>
-                  {cancel && <th scope="col">Cancel</th>}
+                  {edit && <th scope="col">Edit</th>}
                 </tr>
               </thead>
               <tbody className="table-group-divider text-center">
                 {dataList &&
-                  sortObjByDate(dataList).map((data, index) => {
-                    // array.toReversed()
-                    // const reversedIndex = dataList.length - index - 1;
+                  dataList.map((data, index) => {
                     return (
-                      <tr>
-                        <th
-                          scope="row"
-                          className="col-1"
+                      <tr className={`d-flex d-sm-table-row flex-column my-3`}>
+                        <td
+                          className="d-flex d-sm-table-cell align-self-center p-0 p-sm-2"
                           data-order-id={data._id}
+                          data-title="#"
                         >
-                          {dataIndex[index + (page - 1) * items]}
-                        </th>
+                          <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">
+                            {1 + index + (page - 1) * items}
+                          </span>
+                        </td>
                         {/* data.data */}
-                        <td>
-                          {format(
-                            new Date(data.startTime),
-                            "yyyy/MM/dd HH:mm aaa"
-                          )}
+                        <td
+                          className="d-flex d-sm-table-cell align-self-center p-0 p-sm-2"
+                          data-title="Start Time"
+                        >
+                          <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">
+                            {format(
+                              new Date(data.startTime),
+                              "yyyy/MM/dd HH:mm aaa"
+                            )}
+                          </span>
                         </td>
-                        <td>
-                          {format(
-                            new Date(data.endTime),
-                            "yyyy/MM/dd HH:mm aaa"
-                          )}
+                        <td
+                          className="d-flex d-sm-table-cell align-self-center p-0 p-sm-2"
+                          data-title="End Time"
+                        >
+                          <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">
+                            {format(
+                              new Date(data.endTime),
+                              "yyyy/MM/dd HH:mm aaa"
+                            )}
+                          </span>
                         </td>
-                        <td>{data.period}</td>
-                        <td>{data.seatNumber}</td>
-                        <td>
-                          {format(
-                            new Date(data.createdAt),
-                            "yyyy/MM/dd HH:mm aaa"
-                          )}
+                        <td
+                          className="d-flex d-sm-table-cell align-self-center p-0 p-sm-2"
+                          data-title="Period"
+                        >
+                          <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">
+                            {data.period}
+                          </span>
                         </td>
-                        <td>{`NT$${data.price}`}</td>
-                        {cancel && (
-                          <td>
-                            <button
-                              className="bg-transparent border-0"
-                              onClick={handleDeleteBtn}
-                              type="submit"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="20"
-                                height="20"
-                                viewBox="0 0 24 24"
-                                fill="none"
+                        <td
+                          className="d-flex d-sm-table-cell align-self-center p-0 p-sm-2"
+                          data-title="Seat Number"
+                        >
+                          <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">
+                            {data.seatNumber}
+                          </span>
+                        </td>
+                        <td
+                          data-title="Reserve Date"
+                          className="d-flex d-sm-none d-md-table-cell align-self-center p-0 p-sm-2"
+                        >
+                          <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">
+                            {format(
+                              new Date(data.createdAt),
+                              "yyyy/MM/dd HH:mm aaa"
+                            )}
+                          </span>
+                        </td>
+                        <td
+                          className="d-flex d-sm-table-cell align-self-center p-0 p-sm-2"
+                          data-title="Price"
+                        >
+                          <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">{`NT$${data.price}`}</span>
+                        </td>
+                        {edit && (
+                          <td
+                            className="d-flex d-sm-table-cell align-self-center p-0 p-sm-2"
+                            data-title="Cancel"
+                          >
+                            <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">
+                              <button
+                                className="bg-transparent border-0"
+                                onClick={handleDeleteBtn}
+                                type="submit"
                               >
-                                <path
-                                  d="M6 7V18C6 19.1046 6.89543 20 8 20H16C17.1046 20 18 19.1046 18 18V7M6 7H5M6 7H8M18 7H19M18 7H16M10 11V16M14 11V16M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7M8 7H16"
-                                  stroke="#000000"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </button>
+                                <TrashcanIcon width={"20px"} height={"20px"} />
+                              </button>
+                            </span>
                             {/* <input type="checkbox" /> */}
                           </td>
                         )}
@@ -350,8 +340,12 @@ const SchedulePage = () => {
               </tbody>
               {Number(page) === paginateOptions[paginateOptions.length - 1] && (
                 <tfoot>
-                  <tr>
-                    <th scope="col" colSpan={6} className="text-end">
+                  <tr className="d-flex d-sm-table-row">
+                    <th
+                      scope="col"
+                      colSpan={spanAmount}
+                      className="text-end w-100"
+                    >
                       Total Donate :{" "}
                     </th>
                     <th scope="col" className="text-center">
@@ -369,19 +363,21 @@ const SchedulePage = () => {
                   }`}
                   onClick={handlePrevBtn}
                 >
-                  <a className="page-link" href="#" aria-label="Previous">
+                  <button className="page-link" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
-                  </a>
+                  </button>
                 </li>
                 {paginateOptions.map((p) => {
                   return (
                     <li
-                      className={`page-item ${page == p ? "active" : ""}`}
+                      className={`page-item ${
+                        Number(page) === p ? "active" : ""
+                      }`}
                       onClick={handlePaginateBtn}
                     >
-                      <a className="page-link" href="#">
+                      <button className="page-link" href="#">
                         {p}
-                      </a>
+                      </button>
                     </li>
                   );
                 })}
@@ -393,9 +389,9 @@ const SchedulePage = () => {
                   }`}
                   onClick={handleNextBtn}
                 >
-                  <a className="page-link" href="#" aria-label="Next">
+                  <button className="page-link" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
-                  </a>
+                  </button>
                 </li>
               </ul>
             </nav>

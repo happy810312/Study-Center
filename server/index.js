@@ -22,10 +22,13 @@ passport.use(googleStrategy);
 passport.use(facebookStrategy);
 
 mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/studyCenterPractice",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     console.log("connecting to mongodb");
   })

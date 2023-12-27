@@ -1,5 +1,7 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/api/recharge";
+const API_URL =
+  process.env.REACT_APP_RECHARGE_API_URL ||
+  "http://localhost:8080/api/recharge";
 
 class RechargeService {
   recharge(amount) {

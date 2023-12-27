@@ -87,8 +87,9 @@ const SeatReservedComponent = ({
         navigate("/schedule");
       })
       .catch((e) => {
+        console.log(e);
         window.scrollTo({ top: "0", behavior: "smooth" });
-        setMessage(e.response.data.msg);
+        setMessage(e.response.data.message);
       });
   };
 
@@ -132,7 +133,7 @@ const SeatReservedComponent = ({
                         {seats[blockName].map((seatNumber) => {
                           const isUnAvaliable =
                             foundUnAvaliableSeats[seatNumber] ===
-                            "unAvaliable seat";
+                            "unAvailable seat";
                           return (
                             <div
                               onClick={handleSelectedSeat}

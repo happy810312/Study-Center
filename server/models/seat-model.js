@@ -23,7 +23,7 @@ const seatSchema = mongoose.Schema({
     require: function () {
       return reservationType === "period";
     },
-    enum: ["morning", "afternoon", "evening", "hourly"], // hours到時候刪除
+    enum: ["morning", "afternoon", "evening"], // hours到時候刪除
   },
   user: {
     // 用戶假設是mongodb的object

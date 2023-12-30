@@ -289,7 +289,9 @@ const SchedulePage = () => {
                           data-title="Period"
                         >
                           <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">
-                            {data.period}
+                            {data.reservationType === "hourly"
+                              ? data.reservationType
+                              : data.period}
                           </span>
                         </td>
                         <td

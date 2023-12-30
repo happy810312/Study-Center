@@ -19,9 +19,9 @@ router.get(
   "/search",
   seatsMiddleware.checkPeriodMiddleware,
   async (req, res) => {
-    const { startTime, endTime } = req.query;
-    const { period } = req.query; // req.query.period從middleware傳入
-    console.log(period); // period[0]
+    const { startTime, endTime, period } = req.query; // period是時段預約的
+    const { hourlyPeriod } = req; // req.hourlyPeriod從middleware傳入
+    console.log(hourlyPeriod); // period[0]
 
     // 檢查日期字符串是否有效
     const parsedStartTime = Date.parse(startTime); // 1695999959000
@@ -41,13 +41,15 @@ router.get(
       */
         {
           $facet: {
-            // 1.針對hourly來抓資料(已完成)
+            // 1.使用者使用hourly，針對hourly來抓資料(已完成)
+            // 2.使用者使用period，針對hourly來抓資料(已完成)
             hourlySearch: [
               {
                 $match: {
                   $or: [
                     {
                       reservationType: "hourly",
+                      period: period || { $in: hourlyPeriod }, // 改成就算預約小時零租，也要用middleware計算寫入period
                       // MongoDB抓出来的startTime 在 前端输入的時間區間內
                       // MongoDB抓出来的endTime 在 前端输入的時間區間內
                       startTime: {
@@ -61,6 +63,7 @@ router.get(
                     },
                     {
                       reservationType: "hourly",
+                      period: period || { $in: hourlyPeriod }, // 改成就算預約小時零租，也要用middleware計算period
                       // MongoDB抓出来的startTime 在 前端输入的時間區間內
                       // MongoDB抓出来的endTime 大於 前端输入的endTime
                       startTime: {
@@ -71,6 +74,7 @@ router.get(
                     },
                     {
                       reservationType: "hourly",
+                      period: period || { $in: hourlyPeriod }, // 改成就算預約小時零租，也要用middleware計算period
                       // MongoDB抓出来的startTime 小於 前端输入的startTime
                       // MongoDB抓出来的endTime 在 前端输入的時間區間內
                       startTime: { $lte: new Date(startTime) },
@@ -81,6 +85,7 @@ router.get(
                     },
                     {
                       reservationType: "hourly",
+                      period: period || { $in: hourlyPeriod }, // 改成就算預約小時零租，也要用middleware計算period
                       // MongoDB抓出来的startTime 在 前端输入的startTime之前
                       // MongoDB抓出来的endTime 在 前端输入的endTime之後
                       startTime: { $lte: new Date(startTime) },
@@ -90,7 +95,8 @@ router.get(
                 },
               },
             ],
-            // 2.針對period來抓資料
+            // 1.使用者使用hourly，針對period來抓資料
+            // 2.使用者使用period，針對period來抓資料
             periodSearch: [
               // addFields將startTime、endTime調整到startOfDay、endOfDay
               {
@@ -107,7 +113,9 @@ router.get(
                       {
                         $and: [
                           { $eq: ["$reservationType", "period"] },
-                          { $eq: ["$period", period] },
+                          {
+                            $eq: ["$period", period || { $in: hourlyPeriod }],
+                          },
                           // MongoDB抓出来的startTime 在 前端输入的時間區間內
                           // MongoDB抓出来的endTime 在 前端输入的時間區間內
                           { $gte: ["$startTime", "$newStartTime"] },
@@ -119,7 +127,9 @@ router.get(
                       {
                         $and: [
                           { $eq: ["$reservationType", "period"] },
-                          { $eq: ["$period", period] },
+                          {
+                            $eq: ["$period", period || { $in: hourlyPeriod }],
+                          },
                           // MongoDB抓出来的startTime 在 前端输入的時間區間內
                           // MongoDB抓出来的endTime 在 前端输入的時間區間內
                           { $gte: ["$startTime", "$newStartTime"] },
@@ -130,7 +140,9 @@ router.get(
                       {
                         $and: [
                           { $eq: ["$reservationType", "period"] },
-                          { $eq: ["$period", period] },
+                          {
+                            $eq: ["$period", period || { $in: hourlyPeriod }],
+                          },
                           // MongoDB抓出来的startTime 在 前端输入的時間區間內
                           // MongoDB抓出来的endTime 在 前端输入的時間區間內
                           { $lte: ["$startTime", "$newStartTime"] },
@@ -141,7 +153,9 @@ router.get(
                       {
                         $and: [
                           { $eq: ["$reservationType", "period"] },
-                          { $eq: ["$period", period] },
+                          {
+                            $eq: ["$period", period || { $in: hourlyPeriod }],
+                          },
                           // MongoDB抓出来的startTime 在 前端输入的時間區間內
                           // MongoDB抓出来的endTime 在 前端输入的時間區間內
                           { $lte: ["$startTime", "$newStartTime"] },
@@ -188,45 +202,77 @@ router.get(
 );
 
 // post使用時間+座位號碼 => 儲存
-router.post("/reserved", async (req, res) => {
-  // const { error } = seatValidation(req.body);
-  // if (error) return res.send(401).send(error.details[0].message);
+router.post(
+  "/reserved",
+  seatsMiddleware.checkPeriodMiddleware,
+  async (req, res) => {
+    // const { error } = seatValidation(req.body);
+    // if (error) return res.send(401).send(error.details[0].message);
 
-  const { seatNumber, startTime, endTime, period, reservationType } = req.body;
+    let { seatNumber, startTime, endTime, period, reservationType } = req.body;
+    const { hourlyPeriod } = req;
+
+    console.log({ seatNumber, startTime, endTime, period, reservationType });
+
+    try {
+      const periodsToUse = !period ? hourlyPeriod : [period];
+
+      const savedSeats = await Promise.all(
+        periodsToUse.map(async (periodItem) => {
+          const newSeat = new Seat({
+            seatNumber,
+            startTime,
+            endTime,
+            period: periodItem,
+            reservationType,
+            user: req.user._id,
+            username: req.user.username,
+            cardID: req.user.cardID,
+          });
+          const totalPrice = newSeat.calculatePrice(newSeat.period);
+          newSeat.price = totalPrice;
+
+          // 扣除用户钱包的金额
+          if (req.user.wallet < totalPrice) {
+            throw new Error("Remaining balance is not enough.");
+          }
+          req.user.wallet -= totalPrice;
+
+          return newSeat.save();
+        })
+      );
+
+      const savedUser = await req.user.save();
+
+      return res.json({
+        message: "Reserved successfully",
+        seatInfo: savedSeats,
+        userInfo: savedUser,
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Server error.", error: error.message });
+    }
+  }
+);
+
+router.post("/testReserved", async (req, res) => {
+  const { seatNumber, startTime, endTime } = req.body;
 
   try {
     const newSeat = new Seat({
       seatNumber,
       startTime,
       endTime,
-      period: period || "hourly",
+      periods: periodsToUse, // 存储所有相关的 period
       reservationType,
       user: req.user._id,
       username: req.user.username,
       cardID: req.user.cardID,
     });
-
-    const totalPrice = newSeat.calculatePrice(newSeat.period);
-    newSeat.price = totalPrice;
-
-    // 扣除用戶錢包的金額
-    if (req.user.wallet < totalPrice) {
-      return res
-        .status(400)
-        .json({ message: "Remaining balance is not enough." });
-    }
-    req.user.wallet -= totalPrice;
-    const savedUser = await req.user.save();
-    const savedSeat = await newSeat.save();
-
-    return res.json({
-      message: "Reserved successfully",
-      seatInfo: savedSeat,
-      userInfo: savedUser,
-    });
   } catch (error) {
-    // req.user.wallet += totalPrice;
-    return res.status(500).json({ message: "Server error.", error });
+    console.log(error);
   }
 });
 

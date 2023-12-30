@@ -59,7 +59,12 @@ const calculatePeriod = (startTime, endTime) => {
  * @param {Function} next - Express next function.
  */
 const checkPeriodMiddleware = (req, res, next) => {
-  const { startTime, endTime } = req.query;
+  let { startTime, endTime } = req.query;
+
+  if (req.method === "POST") {
+    startTime = req.body.startTime;
+    endTime = req.body.endTime;
+  }
 
   if (!startTime || !endTime) {
     return res
@@ -67,8 +72,8 @@ const checkPeriodMiddleware = (req, res, next) => {
       .json({ message: "Missing starttime or endtime in the request" });
   }
 
-  const period = calculatePeriod(new Date(startTime), new Date(endTime));
-  req.query.period = period;
+  const hourlyPeriod = calculatePeriod(new Date(startTime), new Date(endTime));
+  req.hourlyPeriod = hourlyPeriod;
   next();
 };
 

@@ -80,7 +80,7 @@ const linepayConfirm = async (req, res) => {
         },
       },
     ]);
-    res.redirect(`${process.env.FRONT_URL}/profile`);
+    res.redirect(`${process.env.FRONT_URL || "http://localhost:3000"}/profile`);
   } catch (error) {
     return res.status(500).json({
       message:

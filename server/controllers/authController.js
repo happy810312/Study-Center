@@ -84,7 +84,7 @@ const googleLogin = async (req, res) => {
         user: req.user,
       })
     );
-    res.redirect(`${process.env.FRONT_URL}/profile`);
+    res.redirect(`${process.env.FRONT_URL || "http://localhost:3000"}/profile`);
   } else {
     return res.status(400).redirect(`${process.env.FRONT_URL}/login`);
   }

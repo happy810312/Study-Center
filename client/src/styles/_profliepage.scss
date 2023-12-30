@@ -16,7 +16,8 @@ section.profile {
         div.profile-title_photo {
           position: relative;
           img.profile-title_thumbnail {
-            max-width: 200px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
           }
           button.profile-title_add-thumbnail {

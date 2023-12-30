@@ -14,29 +14,21 @@ const seatSchema = mongoose.Schema({
     type: Date,
     require: true,
   },
+  period: {
+    type: [String],
+    enum: ["morning", "afternoon", "evening"],
+    default: [],
+  },
   reservationType: {
     type: String,
-    enum: ["hourly", "period"],
-  },
-  period: {
-    type: String,
-    require: function () {
-      return reservationType === "period";
+    default: function () {
+      return this.period.length === 0 ? "hourly" : "period";
     },
-    enum: ["morning", "afternoon", "evening"], // hours到時候刪除
   },
   user: {
     // 用戶假設是mongodb的object
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    require: true,
-  },
-  username: {
-    type: String,
-    require: true,
-  },
-  cardID: {
-    type: String,
     require: true,
   },
   createdAt: {
@@ -51,26 +43,25 @@ const seatSchema = mongoose.Schema({
 });
 
 // 計算價格
-seatSchema.methods.calculatePrice = function (period) {
+seatSchema.methods.calculatePrice = function () {
   const timeSlot = this.endTime.getTime() - this.startTime.getTime(); // mile seconds
-  const timeSlotHR = Math.floor(timeSlot / (1000 * 60 * 60)); // hour
-  const timeSlotDate = Math.floor(timeSlotHR / 24);
+  const timeSlotHR = timeSlot / (1000 * 60 * 60); // hour
+  const timeSlotDate = Math.ceil(timeSlotHR / 24);
 
   const discounts = 0.4;
   let totalPrice;
 
   // 包位計算價格
-  if (period !== "hourly") {
-    const periodPrice =
-      period === "morning"
-        ? 75
-        : period === "afternoon"
-        ? 105
-        : period === "evening"
-        ? 125
-        : (() => {
-            throw new Error("Invalid period");
-          })();
+  if (this.period.length !== 0) {
+    const periodPrice = this.period.includes("morning")
+      ? 75
+      : this.period.includes("afternoon")
+      ? 105
+      : this.period.includes("evening")
+      ? 125
+      : (() => {
+          throw new TypeError("Invalid period");
+        })();
     totalPrice = periodPrice * timeSlotDate * discounts;
   } else {
     // 小時零租

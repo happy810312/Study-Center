@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { getHours, addHours, set, parseISO } from "date-fns";
-import { isBefore, isAfter, startOfDay, endOfDay } from "date-fns";
+import { getHours, addHours, getSeconds, getMinutes } from "date-fns";
+import { set, parseISO } from "date-fns";
+import { isBefore, isAfter, isToday, startOfDay, endOfDay } from "date-fns";
 
 import TimePickerComponent from "../components/TimePicker-component";
 import SeatReservedComponent from "../components/SeatReserved-component";
@@ -16,7 +17,7 @@ const BookingPage = () => {
   // initialize time
   const [selectedDate, setSelectedDate] = useState(new Date()); // 只是給datePicker組件使用的
   const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(addHours(new Date(), 1));
   const [message, setMessage] = useState(null);
 
   const handleStartTimeChange = (newStartTime) => {
@@ -29,8 +30,7 @@ const BookingPage = () => {
   };
   const handleSearch = () => {
     function formatDateToISO(dateString) {
-      const date = new Date(dateString);
-      return date.toISOString();
+      return new Date(dateString).toISOString();
     }
 
     const startTimeISO = formatDateToISO(startTime);
@@ -81,15 +81,25 @@ const BookingPage = () => {
     } else if (getHours(selectedDate) >= 23) {
       const nextDay = endOfDay(addHours(selectedDay, 1));
       initializeTime(nextDay, 8, 9);
-    } else {
-      initializeTime(
-        selectedDate,
-        getHours(selectedDate),
-        getHours(selectedDate) + 1
-      );
+    } else if (isToday(selectedDay)) {
+      setStartTime(new Date());
+      setEndTime(addHours(new Date(), 1));
     }
   }, [selectedDate]);
 
+  // // 每分鐘檢查一次，重新渲染頁面
+  // useEffect(() => {
+  //   const current = new Date();
+  //   const minuteUnit = 60 - getSeconds(current);
+
+  //   const interval = setInterval(() => {
+  //     const currentMinute = getMinutes(current);
+  //     const nextMinute = (currentMinute + 1) % 60;
+
+  //     setSelectedDate((prev) => set(prev, { minutes: nextMinute }));
+  //   }, minuteUnit);
+  //   return () => clearInterval(interval);
+  // }, []);
   return (
     <section
       className="booking trigger-for-header-grey-light"

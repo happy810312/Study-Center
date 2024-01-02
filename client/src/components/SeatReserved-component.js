@@ -7,6 +7,7 @@ import seatsService from "../services/seats-service";
 const SeatReservedComponent = ({
   startTime,
   endTime,
+  period,
   setIsDateChoosed,
   foundUnAvaliableSeats,
 }) => {
@@ -71,7 +72,7 @@ const SeatReservedComponent = ({
   };
   const handleReserve = () => {
     seatsService
-      .reserveSeat(selectedSeat, startTime, endTime)
+      .reserveSeat(selectedSeat, startTime, endTime, period)
       .then((data) => {
         window.alert(
           `Reserve successfully.\nSeatNo:${
@@ -82,7 +83,7 @@ const SeatReservedComponent = ({
           )}\nEndTime:${format(
             new Date(data.data.seatInfo.endTime),
             "yyyy/MM/dd HH:mm"
-          )}\nRemaining Balance:${data.data.userInfo.wallet}`
+          )}\nPeriod:${period}\nRemaining Balance:${data.data.userInfo.wallet}`
         );
         navigate("/schedule");
       })

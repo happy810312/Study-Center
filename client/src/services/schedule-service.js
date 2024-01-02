@@ -3,7 +3,6 @@ import axios from "axios";
 const API_URL =
   process.env.REACT_APP_SCHEDULE_API_URL ||
   "http://localhost:8080/api/schedule";
-console.log(API_URL);
 
 class ScheduleService {
   getSchedules(startDate, endDate, page, items) {

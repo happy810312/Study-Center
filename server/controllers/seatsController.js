@@ -1,16 +1,16 @@
 const { mongoose } = require("mongoose");
 const Seat = require("../models").seat;
-const { startOfDay, endOfDay } = require("date-fns");
+const { startOfDay, endOfDay, parseISO } = require("date-fns");
 
 /**
  * @desc Filter avaliable seats by hourly or period slot.
  * @route GET / api/seats?startTime=&endTime=[&period=]
  * @access Private
  */
-const getAvaliableSeats = async (req, res) => {
+const getUnAvaliableSeats = async (req, res) => {
   const { startTime, endTime, period } = req.query; // period是時段預約的
   const { hourlyPeriod } = req; // req.hourlyPeriod從middleware傳入
-
+  console.log(period);
   // 檢查日期字符串是否有效
   const parsedStartTime = Date.parse(startTime); // 1695999959000
   const parsedEndTime = Date.parse(endTime); // 1696003559000
@@ -208,8 +208,8 @@ const postReservation = async (req, res) => {
 
   // 設定startOfDay及endOfDay可避免搜尋schedule時出錯
   if (period) {
-    startTime = startOfDay(startTime);
-    endTime = endOfDay(endTime);
+    startTime = startOfDay(parseISO(startTime));
+    endTime = endOfDay(parseISO(endTime));
   }
 
   const session = await mongoose.startSession();
@@ -268,4 +268,4 @@ const postReservation = async (req, res) => {
   // }
 };
 
-module.exports = { getAvaliableSeats, postReservation };
+module.exports = { getUnAvaliableSeats, postReservation };

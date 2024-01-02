@@ -267,10 +267,12 @@ const SchedulePage = () => {
                           data-title="Start Time"
                         >
                           <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">
-                            {format(
-                              new Date(data.startTime),
-                              "yyyy/MM/dd HH:mm aaa"
-                            )}
+                            {data.reservationType === "hourly"
+                              ? format(
+                                  new Date(data.startTime),
+                                  "yyyy/MM/dd HH:mm aaa"
+                                )
+                              : format(new Date(data.startTime), "yyyy/MM/dd")}
                           </span>
                         </td>
                         <td
@@ -278,10 +280,12 @@ const SchedulePage = () => {
                           data-title="End Time"
                         >
                           <span className="flex-grow-1 flex-sm-grow-0 flex-shrink-1 flex-sm-shrink-0 align-self-center align-self-sm-stretch p-2">
-                            {format(
-                              new Date(data.endTime),
-                              "yyyy/MM/dd HH:mm aaa"
-                            )}
+                            {data.reservationType === "hourly"
+                              ? format(
+                                  new Date(data.endTime),
+                                  "yyyy/MM/dd HH:mm aaa"
+                                )
+                              : format(new Date(data.startTime), "yyyy/MM/dd")}
                           </span>
                         </td>
                         <td

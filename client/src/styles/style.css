@@ -1901,17 +1901,17 @@ section.monthy-booking div.monthy-booking_wrapper form.monthy-booking_date-range
   padding-bottom: 0;
 }
 section.monthy-booking div.monthy-booking_wrapper button.monthy-booking-menu_navigation-search {
-  width: 10vw;
+  width: 100%;
   font-size: 1rem;
   font-weight: 500;
   color: rgba(21, 22, 24, 0.6);
-  border: none;
+  border: 1px solid rgba(21, 22, 24, 0.2);
   border-radius: 4px;
-  background-color: #fff;
+  background-color: transparent;
   padding: 5.25px 4px;
-  box-shadow: 0 0 2px rgba(21, 22, 24, 0.3);
 }
 section.monthy-booking div.monthy-booking_wrapper button.monthy-booking-menu_navigation-search:hover {
+  border: 1px solid rgba(21, 22, 24, 0.2);
   background-color: #e8eaea;
 }
 

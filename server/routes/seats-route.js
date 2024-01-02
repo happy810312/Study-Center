@@ -14,7 +14,7 @@ router.get("/testAPI", (req, res) => {
 router.get(
   "/",
   seatsMiddleware.checkPeriodMiddleware,
-  seatsController.getAvaliableSeats
+  seatsController.getUnAvaliableSeats
 );
 router.post("/", seatsController.postReservation);
 

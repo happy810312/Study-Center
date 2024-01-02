@@ -2,6 +2,7 @@
 
 ## 作品連結
 
+<a href="[https://www.example.com](https://k-study-center.onrender.com/)" target="_blank">K-Study-Center</a>
 [K-Study-Center](https://k-study-center.onrender.com/){:target="_blank"}
 
 因使用[Render](https://render.com/){:target="_blank"}免費部屬方案，短時間內若無人使用，後端約需30秒的啟用時間，故第一次需等待久一點

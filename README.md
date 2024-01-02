@@ -2,9 +2,9 @@
 
 ## 作品連結
 
-[K-Study-Center](https://k-study-center.onrender.com/)
+[K-Study-Center](https://k-study-center.onrender.com/){target="_blank"}
 
-因使用[Render](https://render.com/)免費部屬方案，短時間內若無人使用，後端約需30秒的啟用時間，故第一次需等待久一點
+因使用[Render](https://render.com/){target="_blank"}免費部屬方案，短時間內若無人使用，後端約需30秒的啟用時間，故第一次需等待久一點
 
 ## 專案目的
 
@@ -47,7 +47,7 @@
 
 ## 學習參考
 
-[Moved.](https://moved.com/)
+[Moved.](https://moved.com/){target="_blank"}
 
 **如有侵權請與我聯繫，我將立即刪除**
 

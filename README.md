@@ -2,7 +2,8 @@
 
 ## 作品連結
 
-https://k-study-center.onrender.com/
+(https://k-study-center.onrender.com/)
+
 因使用[Render](https://render.com/)免費部屬方案，短時間內如無使用，後端約需30秒的時間啟用，故第一次需等待久一點
 
 ## 專案目的
@@ -33,8 +34,8 @@ https://k-study-center.onrender.com/
  
 ## 代辦清單
 
-- [] 新增貼文發送至資料庫儲存
-- [] 管理員Dashboard
+- [ ] 新增貼文發送至資料庫儲存
+- [ ] 管理員Dashboard
 
 ## 使用技術
 

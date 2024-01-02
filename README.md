@@ -2,7 +2,7 @@
 
 ## 作品連結
 
-(https://k-study-center.onrender.com/)
+[K-Study-Center](https://k-study-center.onrender.com/)
 
 因使用[Render](https://render.com/)免費部屬方案，短時間內如無使用，後端約需30秒的時間啟用，故第一次需等待久一點
 
@@ -46,9 +46,11 @@
 ## 學習參考
 
 **如有侵權請與我聯繫，我將立即刪除**
+
 [Moved.](https://moved.com/)
 
 ## 聯絡資訊
 
 邱冠傑 先生
+
 E-Mail:littlesheep1992@hotmail.com
